@@ -1,14 +1,14 @@
-# TicTacToeProject
-For CS 2110
+#Tic Tac Toe Project
 
-List of files:
-- TicTacToeBoard = sets up the screen for the game
-- RunTheGame = actual implementation that can interact with user 
-- GameOver = the code from the Joust project that made a game over screen
+1. Names and computing IDs of all members in the group
+ - Lauren Johnson laj3bc
+ -
+ -
+ -
+
+2. Brief instructions on how to run your game (be sure to submit all necessary files so that
+the TAs can run and play your game on their computer)
 
 
-WORK ON:
-- Tiffany: Game over and Exit
-- Sally: get diaplay to work & have the page switch when board is selected
-- Lauren: getting button to display X or O, look into GUI skins
-- Catherine: game board to display
+3. If your group chose to implement extra features in order to obtain some extra credit
+points, please describe that feature (or those features) in this file 
