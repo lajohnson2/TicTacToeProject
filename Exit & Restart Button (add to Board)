@@ -1,4 +1,7 @@
-JButton exit=new JButton("Exit");//creating instance of JButton  
+JButton restart=new JButton("Restart");//creating instance of JButton, restart button  
+		restart.setBounds(130,100,100,40);//x axis, y axis, width, height  
+		
+		JButton exit=new JButton("Exit");//creating instance of JButton  
 		//exit.setBounds(30,100,100,40);//x axis, y axis, width, height
 		exit.addActionListener(new ActionListener()
         {
@@ -13,10 +16,13 @@ JButton exit=new JButton("Exit");//creating instance of JButton
             @Override
             public void actionPerformed(ActionEvent event)
             {
-            	
+            	for(int i=0; i<=81; i++){
+        			buttonArray[i].setText(" ");						
+        		}
             }
         });
-	        
+			frame.add(restart); 
+			restart.setBounds(100,550,100,40);//x axis, y axis, width, height  
 	        frame.add(exit);
 	        //exit.setBounds(100,520,100,40);//x axis, y axis, width, height  
 	        
