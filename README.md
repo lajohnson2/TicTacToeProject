@@ -1,10 +1,10 @@
 #Tic Tac Toe Project
 
 1. Names and computing IDs of all members in the group
- - Lauren Johnson laj3bc
- -
- -
- -
+- Lauren Johnson laj3bc
+-
+-
+-
 
 2. Brief instructions on how to run your game (be sure to submit all necessary files so that
 the TAs can run and play your game on their computer)
