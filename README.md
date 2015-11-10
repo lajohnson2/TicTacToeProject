@@ -2,7 +2,7 @@
 
 1. Names and computing IDs of all members in the group
 - Lauren Johnson laj3bc
--
+- Kathryn Vanderkooi kav5bd
 -
 -
 
