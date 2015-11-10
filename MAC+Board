@@ -1,0 +1,77 @@
+import java.awt.Button;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.lang.model.element.Element;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+
+public class Board extends JFrame {
+	
+	private JFrame frame;
+	JButton buttonArray[] = new JButton[81];
+	private ActionListener actionListener;
+	
+	public static void main(String[] args) {
+		new Board();
+
+	}
+	
+	public Board() {
+		frame = new JFrame("Tic-Tac-Toe-9");
+		frame.setSize(500,500);
+		frame.setResizable(false);
+		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		frame.setLayout(new GridLayout(9,9));
+		
+		actionListener = new ActionListener() {
+		    @Override  
+			public void actionPerformed(ActionEvent event) {
+		        JButton button = (JButton) event.getSource();
+		        button.setText("X");
+		     }
+		};
+		
+		for(int i = 0; i < 81; i ++) {
+			buttonArray[i] = new JButton();
+			if(i <= 2 || (i <= 11 && i >=9) || (i <= 20 && i >=18)) {
+				buttonArray[i].setBackground(Color.GRAY);
+			}
+			else if((i >= 3 && i <=5) || (i >=12 && i <=14) || (i >=21 && i <=23)) {
+				buttonArray[i].setBackground(Color.WHITE);
+			}
+			else if((i >= 6 && i <=8) || (i >=15 && i <=17) || (i >=24 && i <=26)) {
+				buttonArray[i].setBackground(Color.GRAY);
+			}
+			else if((i >=  27&& i <=29) || (i >=36 && i <=38) || (i >=45 && i <=47)) {
+				buttonArray[i].setBackground(Color.WHITE);
+			}
+			else if((i >= 30 && i <=32) || (i >=39 && i <=41) || (i >=48 && i <=50)) {
+				buttonArray[i].setBackground(Color.GRAY);
+			}
+			else if((i >= 33 && i <=35) || (i >=42 && i <=44) || (i >=51 && i <=53)) {
+				buttonArray[i].setBackground(Color.WHITE);
+			}
+			else if((i >= 54 && i <=56) || (i >=63 && i <=65) || (i >=72 && i <= 74)) {
+				buttonArray[i].setBackground(Color.GRAY);
+			}
+			else if((i >= 57 && i <=59) || (i >=66 && i <=68) || (i >=75 && i <=77)) {
+				buttonArray[i].setBackground(Color.WHITE);
+			}
+			else {
+				buttonArray[i].setBackground(Color.GRAY);
+			}
+			buttonArray[i].addActionListener(actionListener);
+			frame.add(buttonArray[i]);
+			frame.setVisible(true);
+		}
+		
+		
+	
+		
+	}
+
+}
