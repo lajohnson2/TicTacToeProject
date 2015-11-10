@@ -1,0 +1,26 @@
+JButton exit=new JButton("Exit");//creating instance of JButton  
+		//exit.setBounds(30,100,100,40);//x axis, y axis, width, height
+		exit.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent event)
+            {
+            	System.exit(0);
+            }
+        });
+		restart.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent event)
+            {
+            	
+            }
+        });
+	        
+	        frame.add(exit);
+	        //exit.setBounds(100,520,100,40);//x axis, y axis, width, height  
+	        
+	        
+	        //make sure the JFrame is visible
+	        frame.setVisible(true); //the JFrame is set to visible
+	        
