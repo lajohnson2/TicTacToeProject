@@ -1,23 +1,27 @@
-// Alternates Xs and Os
- boolean indicator = true;
- private int Count[] = new int[9];
- 
-class ButtonListener implements java.awt.event.ActionListener {
-        public void actionPerformed(java.awt.event.ActionEvent e) {
-            for (int i = 0; i < 9; i++) {
-                if (e.getSource() == jButton[i]) {
-                    if(Count[i]==0){
-                    if (indicator == true) {
-                        Count[i]=1;
-                        buttonArray[i].setText("X");
-                        indicator = false;
-                    } else {
-                        Count[i]=2;
-                        buttonArray[i].setText("O");
-
-                        indicator = true;
-                    }}
-                }
-            }
-        }
-    }
+/**
+		 * Define what happens when the players hit the buttons
+		 * 0: change to nothing
+		 * 1: X
+		 * 2: O
+		 */
+		setXO = new ActionListener() {
+			@Override  
+			public void actionPerformed(ActionEvent event) {
+				JButton button = (JButton) event.getSource();
+				count++;
+				count%=3;
+				switch (count) {
+					case 0:
+						button.setText(null);
+						break;
+					case 1:
+						button.setText("X");
+						UIManager.put("Button.font",  new javax.swing.plaf.FontUIResource("Tahoma", Font.BOLD,22));
+						break;
+					case 2:
+						button.setText("O");
+						UIManager.put("Button.font",  new javax.swing.plaf.FontUIResource("Tahoma", Font.BOLD,22));
+						break;
+				}
+			}
+		};
