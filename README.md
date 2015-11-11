@@ -1,10 +1,10 @@
 #Tic Tac Toe Project
 
 1. Names and computing IDs of all members in the group
-- Lauren Johnson laj3bc
-- Kathryn Vanderkooi kav5bd
-- Sallie Lam sjl5bz 
--
+  - Lauren Johnson laj3bc
+  - Kathryn Vanderkooi kav5bd
+  - Sallie Lam sjl5bz 
+  -
 
 2. Brief instructions on how to run your game (be sure to submit all necessary files so that
 the TAs can run and play your game on their computer)
