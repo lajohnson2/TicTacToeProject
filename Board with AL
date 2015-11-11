@@ -1,0 +1,307 @@
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+
+public class Board extends JFrame {
+
+	private static JFrame frame;
+	JButton buttonArray[] = new JButton[81];
+	private byte count = 0;
+	private ActionListener setXO;
+
+	ArrayList<JButton> board1  = new ArrayList<JButton>();
+	ArrayList<JButton> board2  = new ArrayList<JButton>();
+	ArrayList<JButton> board3  = new ArrayList<JButton>();
+	ArrayList<JButton> board4  = new ArrayList<JButton>();
+	ArrayList<JButton> board5  = new ArrayList<JButton>();
+	ArrayList<JButton> board6  = new ArrayList<JButton>();
+	ArrayList<JButton> board7  = new ArrayList<JButton>();
+	ArrayList<JButton> board8  = new ArrayList<JButton>();
+	ArrayList<JButton> board9  = new ArrayList<JButton>();
+
+	public static void main(String[] args) {
+		new Board();
+
+	}
+
+	public Board() {
+		frame = new JFrame("Which Board?");
+		frame.setSize(600,600);
+		frame.setResizable(false);
+		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		frame.setLayout(new GridLayout(10,9));
+
+		setXO = new ActionListener() {
+			@Override  
+			public void actionPerformed(ActionEvent event) {
+				JButton button = (JButton) event.getSource();
+				count++;
+				count%=3;
+				switch (count) {
+				case 0:
+					button.setText(null);
+					break;
+				case 1:
+					button.setText("X");
+					UIManager.put("Button.font", new javax.swing.plaf.FontUIResource("Century Gothic", Font.BOLD,22));
+					break;
+				case 2:
+					button.setText("O");
+					UIManager.put("Button.font", new javax.swing.plaf.FontUIResource("Century Gothic", Font.BOLD,22));
+					break;
+				}
+			}
+		};
+
+		for(int i = 0; i < 81; i ++) {
+			buttonArray[i] = new JButton();
+			final int buttonNumber = i;
+			buttonArray[buttonNumber].addActionListener(setXO);
+			
+			if(i <= 2 || (i <= 11 && i >=9) || (i <= 20 && i >=18)) {
+				buttonArray[i].setBackground(Color.GREEN);
+				buttonArray[i].setOpaque(true);
+				board1.add(buttonArray[i]);
+				buttonArray[buttonNumber].addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e) {
+						for(int j = 0; j <9; j ++) {
+							board2.get(j).setVisible(false);
+							board3.get(j).setVisible(false);
+							board4.get(j).setVisible(false);
+							board5.get(j).setVisible(false);
+							board6.get(j).setVisible(false);
+							board7.get(j).setVisible(false);
+							board8.get(j).setVisible(false);
+							board9.get(j).setVisible(false);
+						}
+						frame.setTitle("Board 1");
+					}
+
+				});
+
+			}
+			else if((i >= 3 && i <=5) || (i >=12 && i <=14) || (i >=21 && i <=23)) {
+				buttonArray[i].setBackground(Color.WHITE);
+				buttonArray[i].setOpaque(true);
+				board2.add(buttonArray[i]);
+				buttonArray[buttonNumber].addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e) {
+						for(int j = 0; j <9; j ++) {
+							board1.get(j).setVisible(false);
+							board3.get(j).setVisible(false);
+							board4.get(j).setVisible(false);
+							board5.get(j).setVisible(false);
+							board6.get(j).setVisible(false);
+							board7.get(j).setVisible(false);
+							board8.get(j).setVisible(false);
+							board9.get(j).setVisible(false);
+						}
+						frame.setTitle("Board 2");
+					}
+
+				});
+			}
+			else if((i >= 6 && i <=8) || (i >=15 && i <=17) || (i >=24 && i <=26)) {
+				buttonArray[i].setBackground(Color.GREEN);
+				buttonArray[i].setOpaque(true);
+				board3.add(buttonArray[i]);
+				buttonArray[buttonNumber].addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e) {
+						for(int j = 0; j <9; j ++) {
+							board1.get(j).setVisible(false);
+							board2.get(j).setVisible(false);
+							board4.get(j).setVisible(false);
+							board5.get(j).setVisible(false);
+							board6.get(j).setVisible(false);
+							board7.get(j).setVisible(false);
+							board8.get(j).setVisible(false);
+							board9.get(j).setVisible(false);
+						}
+						frame.setTitle("Board 3");
+					}
+
+				});
+			}
+			else if((i >=  27&& i <=29) || (i >=36 && i <=38) || (i >=45 && i <=47)) {
+				buttonArray[i].setBackground(Color.WHITE);
+				buttonArray[i].setOpaque(true);
+				board4.add(buttonArray[i]);
+				buttonArray[buttonNumber].addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e) {
+						for(int j = 0; j <9; j ++) {
+							board1.get(j).setVisible(false);
+							board2.get(j).setVisible(false);
+							board3.get(j).setVisible(false);
+							board5.get(j).setVisible(false);
+							board6.get(j).setVisible(false);
+							board7.get(j).setVisible(false);
+							board8.get(j).setVisible(false);
+							board9.get(j).setVisible(false);
+						}
+						frame.setTitle("Board 4");
+					}
+
+				});
+			}
+			else if((i >= 30 && i <=32) || (i >=39 && i <=41) || (i >=48 && i <=50)) {
+				buttonArray[i].setBackground(Color.GREEN);
+				buttonArray[i].setOpaque(true);
+				board5.add(buttonArray[i]);
+				buttonArray[buttonNumber].addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e) {
+						for(int j = 0; j <9; j ++) {
+							board1.get(j).setVisible(false);
+							board2.get(j).setVisible(false);
+							board3.get(j).setVisible(false);
+							board4.get(j).setVisible(false);
+							board6.get(j).setVisible(false);
+							board7.get(j).setVisible(false);
+							board8.get(j).setVisible(false);
+							board9.get(j).setVisible(false);
+						}
+						frame.setTitle("Board 5");
+					}
+
+				});
+			}
+			else if((i >= 33 && i <=35) || (i >=42 && i <=44) || (i >=51 && i <=53)) {
+				buttonArray[i].setBackground(Color.WHITE);
+				board6.add(buttonArray[i]);
+				buttonArray[buttonNumber].addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e) {
+						for(int j = 0; j <9; j ++) {
+							board1.get(j).setVisible(false);
+							board2.get(j).setVisible(false);
+							board3.get(j).setVisible(false);
+							board4.get(j).setVisible(false);
+							board5.get(j).setVisible(false);
+							board7.get(j).setVisible(false);
+							board8.get(j).setVisible(false);
+							board9.get(j).setVisible(false);
+						}
+						frame.setTitle("Board 6");
+					}
+
+				});
+			}
+			else if((i >= 54 && i <=56) || (i >=63 && i <=65) || (i >=72 && i <= 74)) {
+				buttonArray[i].setBackground(Color.GREEN);
+				buttonArray[i].setOpaque(true);
+				board7.add(buttonArray[i]);
+				buttonArray[buttonNumber].addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e) {
+						for(int j = 0; j <9; j ++) {
+							board1.get(j).setVisible(false);
+							board2.get(j).setVisible(false);
+							board3.get(j).setVisible(false);
+							board4.get(j).setVisible(false);
+							board5.get(j).setVisible(false);
+							board6.get(j).setVisible(false);
+							board8.get(j).setVisible(false);
+							board9.get(j).setVisible(false);
+						}
+						frame.setTitle("Board 7");
+					}
+
+				});
+			}
+			else if((i >= 57 && i <=59) || (i >=66 && i <=68) || (i >=75 && i <=77)) {
+				buttonArray[i].setBackground(Color.WHITE);
+				buttonArray[i].setOpaque(true);
+				board8.add(buttonArray[i]);
+				buttonArray[buttonNumber].addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e) {
+						for(int j = 0; j <9; j ++) {
+							board1.get(j).setVisible(false);
+							board2.get(j).setVisible(false);
+							board3.get(j).setVisible(false);
+							board4.get(j).setVisible(false);
+							board5.get(j).setVisible(false);
+							board6.get(j).setVisible(false);
+							board7.get(j).setVisible(false);
+							board9.get(j).setVisible(false);
+						}
+						frame.setTitle("Board 8");
+					}
+
+				});
+			}
+			else {
+				buttonArray[i].setBackground(Color.GREEN);
+				buttonArray[i].setOpaque(true);
+				board9.add(buttonArray[i]);
+				buttonArray[buttonNumber].addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e) {
+						for(int j = 0; j <9; j ++) {
+							board1.get(j).setVisible(false);
+							board2.get(j).setVisible(false);
+							board3.get(j).setVisible(false);
+							board4.get(j).setVisible(false);
+							board5.get(j).setVisible(false);
+							board6.get(j).setVisible(false);
+							board7.get(j).setVisible(false);
+							board8.get(j).setVisible(false);
+						}
+						frame.setTitle("Board 9");
+					}
+
+				});
+			}
+			
+			frame.add(buttonArray[i]);
+			buttonArray[i].setVisible(true);
+
+		}
+
+		JButton restart=new JButton("Restart");//creating instance of JButton, restart button  
+		restart.setBounds(130,100,100,40);//x axis, y axis, width, height  
+
+		JButton exit=new JButton("Exit");//creating instance of JButton  
+		//exit.setBounds(30,100,100,40);//x axis, y axis, width, height
+		exit.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent event)
+			{
+				System.exit(0);
+			}
+		});
+		restart.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent event)
+			{
+				for(int i=0; i<81; i++){
+					buttonArray[i].setText(" ");						
+				}
+
+
+
+			}
+		});
+		frame.add(restart); 
+		restart.setBounds(100,550,100,40);//x axis, y axis, width, height  
+		frame.add(exit);
+		//exit.setBounds(100,520,100,40);//x axis, y axis, width, height  
+
+
+		//make sure the JFrame is visible
+		frame.setVisible(true); //the JFrame is set to visible
+	}	
+
+}
+
+
+
+
+
+
+
