@@ -4,7 +4,7 @@
   - Lauren Johnson laj3bc
   - Kathryn Vanderkooi kav5bd
   - Sallie Lam sjl5bz 
-  -
+  -Tiffany Vinci-Cannava tv2bq
 
 2. Brief instructions on how to run your game (be sure to submit all necessary files so that
 the TAs can run and play your game on their computer)
