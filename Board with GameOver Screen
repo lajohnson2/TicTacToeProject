@@ -4,7 +4,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
+import javax.swing.*;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -13,13 +13,17 @@ import javax.swing.WindowConstants;
 public class Board extends JFrame {
 
 	private static JFrame frame;
+	private static JFrame grandFrame;
 	JButton buttonArray[] = new JButton[81];
 	private byte count = 0;
 	private ActionListener setXO;
 	private String player1;
 	private String player2;
+	private int oCount;
+	private int xCount;
 	private static JFrame winningOFrame;
 	private static JFrame winningXFrame;
+	private static JFrame hOrC; //Create beginning frame requesting whether player wants to play against someone else or the computer
 
 	ArrayList<JButton> board1 = new ArrayList<JButton>();
 	ArrayList<JButton> board2 = new ArrayList<JButton>();
@@ -44,16 +48,23 @@ public class Board extends JFrame {
 	public Board() {
 		player1 = "X";
 		player2 = "O";
+		oCount = 0;
+		xCount = 0;
 		winningOFrame = new JFrame("O is the winner!");
-		winningOFrame.setSize(600, 600);
+		winningOFrame.setSize(300, 300);
 		winningOFrame.setResizable(false);
 		winningOFrame.setVisible(false);
-		winningOFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		winningOFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		grandFrame = new JFrame("Grand Victory!");
+		grandFrame.setSize(600, 600);
+		grandFrame.setResizable(false);
+		grandFrame.setVisible(false);
+		grandFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		winningXFrame = new JFrame("X is the winner!");
-		winningXFrame.setSize(600, 600);
+		winningXFrame.setSize(300, 300);
 		winningXFrame.setResizable(false);
 		winningXFrame.setVisible(false);
-		winningXFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		winningXFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame = new JFrame("Which Board? " + this.player1 + " Picks");
 		frame.setSize(600, 600);
 		frame.setResizable(false);
@@ -426,15 +437,99 @@ public class Board extends JFrame {
 		}
 		return result;
 	}
-
+//	public static void close(JFrame a){
+//		System.exit(0);
+//	}
 	// implement a way to set the small board to a big x or a big o
 	public void winAction(ArrayList<Integer> determineWinner) {
 		if (determineWinner.equals(oSpots)) {
 			winningOFrame.setVisible(true);
+			//Need a restart button in this frame, and a counter to indicate each player's progress
+			oCount++;
+			grandWinAction(oCount);
 			System.out.println("O is the winner!");
+			JLabel label0 = new JLabel("Congratulations!");
+			JLabel label1 = new JLabel("Score:");
+			JLabel label2 = new JLabel("Player O:" + oCount);
+			JLabel label3 = new JLabel("Player X:" + xCount);
+			JPanel panel = new JPanel();
+			JButton button = new JButton("Try Again!");//Implement same action listener as other restart button
+			button.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent event) {
+					for (int i = 0; i < 81; i++) {
+						buttonArray[i].setText(" ");
+					}
+					// brings back to original big board and clears the locations of
+					// x and o
+					showBoard(board1);
+					showBoard(board2);
+					showBoard(board3);
+					showBoard(board4);
+					showBoard(board5);
+					showBoard(board6);
+					showBoard(board7);
+					showBoard(board8);
+					showBoard(board9);
+					frame.setTitle("Which Board?: " + player1 + " Picks");
+					xSpots.clear();
+					oSpots.clear();
+				}
+			});
+			panel.add(button);
+			panel.add(label0);
+			panel.add(label1);
+			panel.add(label2);
+			panel.add(label3);
+			winningOFrame.add(panel);
+			winningOFrame.dispose();
 		} else {
 			winningXFrame.setVisible(true);
+			//Need a restart button in this frame, and a counter to indicate each player's progress
+			xCount++;
+			grandWinAction(xCount);
 			System.out.println("X is the winner!");
+			JLabel label0 = new JLabel("Congratulations!");
+			JLabel label1 = new JLabel("Score:");
+			JLabel label2 = new JLabel("Player O:" + oCount);
+			JLabel label3 = new JLabel("Player X:" + xCount);
+			JPanel panel = new JPanel();
+			JButton button = new JButton("Try Again!");//Implement same action listener as other restart button
+			button.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent event) {
+					for (int i = 0; i < 81; i++) {
+						buttonArray[i].setText(" ");
+					}
+					// brings back to original big board and clears the locations of
+					// x and o
+					showBoard(board1);
+					showBoard(board2);
+					showBoard(board3);
+					showBoard(board4);
+					showBoard(board5);
+					showBoard(board6);
+					showBoard(board7);
+					showBoard(board8);
+					showBoard(board9);
+					frame.setTitle("Which Board?: " + player1 + " Picks");
+					xSpots.clear();
+					oSpots.clear();
+					winningOFrame.dispose();
+				}
+			});
+			panel.add(button);
+			panel.add(label0);
+			panel.add(label1);
+			panel.add(label2);
+			panel.add(label3);
+			winningXFrame.add(panel);
 		}
+	}
+	public void grandWinAction(int count){
+		if(count>=3){
+			grandFrame.setVisible(true);
+		}
+	
 	}
 }
