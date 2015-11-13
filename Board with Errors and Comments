@@ -1,0 +1,524 @@
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.WindowConstants;
+
+public class TicTacToeBoard extends JFrame {
+	/**
+	 * Fields:
+	 */
+	private static JFrame frame;
+	private static JFrame grandFrame;
+	JButton buttonArray[] = new JButton[81];
+	private ActionListener setXO;
+	private byte count = 0;
+	/* Defines what happens when the players hit the buttons
+	 * 0: X
+	 * 1: O
+	 */
+	private String player1;
+	private String player2;
+
+	private static JFrame hOrC; /*Create beginning frame requesting whether player wants to play against someone else or the computer*/
+
+	/*Fields dealing with the individual 9x9 boards*/
+	ArrayList<JButton> board1 = new ArrayList<JButton>();
+	ArrayList<JButton> board2 = new ArrayList<JButton>();
+	ArrayList<JButton> board3 = new ArrayList<JButton>();
+	ArrayList<JButton> board4 = new ArrayList<JButton>();
+	ArrayList<JButton> board5 = new ArrayList<JButton>();
+	ArrayList<JButton> board6 = new ArrayList<JButton>();
+	ArrayList<JButton> board7 = new ArrayList<JButton>();
+	ArrayList<JButton> board8 = new ArrayList<JButton>();
+	ArrayList<JButton> board9 = new ArrayList<JButton>();
+	ArrayList<JButton> currBoard = new ArrayList<JButton>();
+	ArrayList<ArrayList<JButton>> largeBoard = new ArrayList<ArrayList<JButton>>();
+
+	/*Fields dealing with what we need to calculate the winner*/
+	private int oCount;
+	private int xCount;
+	private static JFrame winningFrame;
+	ArrayList<Integer> oSpots = new ArrayList<Integer>();
+	ArrayList<Integer> xSpots = new ArrayList<Integer>();
+	ArrayList<Integer> oSpotsBig = new ArrayList<Integer>();
+	ArrayList<Integer> xSpotsBig = new ArrayList<Integer>();
+
+
+	public static void main(String[] args) {
+		new TicTacToeBoard();
+
+	}
+
+	public TicTacToeBoard() {
+		player1 = "X";
+		player2 = "O";
+		oCount = 0;
+		xCount = 0;
+		winningFrame = new JFrame("O is the winner!");
+		winningFrame.setSize(300, 300);
+		winningFrame.setResizable(false);
+		winningFrame.setVisible(false);
+		winningFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		grandFrame = new JFrame("Grand Victory!");
+		grandFrame.setSize(600, 600);
+		grandFrame.setResizable(false);
+		grandFrame.setVisible(false);
+		grandFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+		/* Sets up the game */
+		frame = new JFrame("Which Board? " + this.player1 + " Picks");
+		frame.setSize(600, 600);
+		frame.setResizable(false);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		frame.setLayout(new GridLayout(10, 9));
+
+		/* setXO makes the button's text either O or X*/
+		setXO = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				JButton button = (JButton) event.getSource();
+				count++;
+				count %= 2;
+				switch (count) {
+				case 0:
+					button.setText("O");
+					UIManager.put("Button.font", new javax.swing.plaf.FontUIResource(
+							"Century Gothic", Font.BOLD, 22));
+					player1 = "X"; 
+					oSpots.add(Integer.parseInt(button.getName())); /* add location of O to ArrayList of spots*/
+					System.out.println(winOrLose(oSpots)); /* tests to see if it was a winning move (T for win), (F for loss)*/
+					break;
+				case 1:
+					button.setText("X");
+					UIManager.put("Button.font", new javax.swing.plaf.FontUIResource(
+							"Century Gothic", Font.BOLD, 22));
+					player2 = "O";
+					xSpots.add(Integer.parseInt(button.getName())); /* add location of X to ArrayList of spots*/						
+					System.out.println(winOrLose(xSpots)); /* tests to see if it was a winning move (T for win), (F for loss)*/
+					break;
+				}
+			}
+		};
+
+		/* Populates a large board with 81 buttons (9 9x9 boards of buttons) */
+		for (int i = 0; i < 81; i++) {
+			buttonArray[i] = new JButton();
+			final int buttonNumber = i;
+			buttonArray[buttonNumber].addActionListener(setXO);
+
+			/* Board 1: */
+			if (i <= 2 || (i <= 11 && i >= 9) || (i <= 20 && i >= 18)) {
+				buttonArray[i].setBackground(Color.GREEN);
+				buttonArray[i].setOpaque(true);
+				board1.add(buttonArray[i]);
+				String name = String.valueOf(board1.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber]
+						.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								currBoard = (ArrayList<JButton>) e.getSource();
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 1");
+							}
+						});
+				/* Board 2: */
+			} else if ((i >= 3 && i <= 5) || (i >= 12 && i <= 14)
+					|| (i >= 21 && i <= 23)) {
+				buttonArray[i].setBackground(Color.WHITE);
+				buttonArray[i].setOpaque(true);
+				board2.add(buttonArray[i]);
+				String name = String.valueOf(board2.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber]
+						.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								currBoard = (ArrayList<JButton>) e.getSource();
+								hideBoard(board1);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 2");
+							}
+						});
+				/* Board 3: */
+			} else if ((i >= 6 && i <= 8) || (i >= 15 && i <= 17)
+					|| (i >= 24 && i <= 26)) {
+				buttonArray[i].setBackground(Color.GREEN);
+				buttonArray[i].setOpaque(true);
+				board3.add(buttonArray[i]);
+				String name = String.valueOf(board3.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber]
+						.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								currBoard = (ArrayList<JButton>) e.getSource();
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 3");
+							}
+						});
+				/* Board 4: */	
+			} else if ((i >= 27 && i <= 29) || (i >= 36 && i <= 38)
+					|| (i >= 45 && i <= 47)) {
+				buttonArray[i].setBackground(Color.WHITE);
+				buttonArray[i].setOpaque(true);
+				board4.add(buttonArray[i]);
+				String name = String.valueOf(board4.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber]
+						.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								currBoard = (ArrayList<JButton>) e.getSource();
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 4");
+							}
+						});
+				/* Board 5: */
+			} else if ((i >= 30 && i <= 32) || (i >= 39 && i <= 41)
+					|| (i >= 48 && i <= 50)) {
+				buttonArray[i].setBackground(Color.GREEN);
+				buttonArray[i].setOpaque(true);
+				board5.add(buttonArray[i]);
+				String name = String.valueOf(board5.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber]
+						.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								currBoard = (ArrayList<JButton>) e.getSource();
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 5");
+							}
+						});
+				/* Board 6: */
+			} else if ((i >= 33 && i <= 35) || (i >= 42 && i <= 44)
+					|| (i >= 51 && i <= 53)) {
+				buttonArray[i].setBackground(Color.WHITE);
+				board6.add(buttonArray[i]);
+				String name = String.valueOf(board6.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber]
+						.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								currBoard = (ArrayList<JButton>) e.getSource();
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board7);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 6");
+							}
+						});
+				/* Board 7: */
+			} else if ((i >= 54 && i <= 56) || (i >= 63 && i <= 65)
+					|| (i >= 72 && i <= 74)) {
+				buttonArray[i].setBackground(Color.GREEN);
+				buttonArray[i].setOpaque(true);
+				board7.add(buttonArray[i]);
+				String name = String.valueOf(board7.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber]
+						.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								currBoard = (ArrayList<JButton>) e.getSource();
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 7");
+							}
+						});
+				/* Board 8: */
+			} else if ((i >= 57 && i <= 59) || (i >= 66 && i <= 68)
+					|| (i >= 75 && i <= 77)) {
+				buttonArray[i].setBackground(Color.WHITE);
+				buttonArray[i].setOpaque(true);
+				board8.add(buttonArray[i]);
+				String name = String.valueOf(board8.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber]
+						.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								currBoard = (ArrayList<JButton>) e.getSource();
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board9);
+								frame.setTitle("Board 8");
+							}
+						});
+				/* Board 9: */
+			} else {
+				buttonArray[i].setBackground(Color.GREEN);
+				buttonArray[i].setOpaque(true);
+				board9.add(buttonArray[i]);
+				String name = String.valueOf(board9.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber]
+						.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								currBoard = (ArrayList<JButton>) e.getSource();
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board8);
+								frame.setTitle("Board 9");
+							}
+
+						});
+			}
+
+			/* making an array list with all of the small boards to be used to help later
+			 * in finding the overall winner */
+			largeBoard.add(board1);
+			largeBoard.add(board2);
+			largeBoard.add(board3);
+			largeBoard.add(board4);
+			largeBoard.add(board5);
+			largeBoard.add(board6);
+			largeBoard.add(board6);
+			largeBoard.add(board7);
+			largeBoard.add(board8);
+			largeBoard.add(board9);
+
+			frame.add(buttonArray[i]);
+			buttonArray[i].setVisible(true);
+
+		}
+
+		/* Creates a JButton for the Restart button */
+		JButton restart = new JButton("Restart");
+		restart.setBounds(130, 100, 100, 40);/* x axis, y axis, width, height*/
+		restart.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				for (int i = 0; i < 81; i++) {
+					buttonArray[i].setText(" ");
+				}
+				/* brings back to original big board and clears the locations of Xs & Os */
+				showBoard(board1);
+				showBoard(board2);
+				showBoard(board3);
+				showBoard(board4);
+				showBoard(board5);
+				showBoard(board6);
+				showBoard(board7);
+				showBoard(board8);
+				showBoard(board9);
+				frame.setTitle("Which Board?: " + player1 + " Picks");
+				xSpots.clear();
+				oSpots.clear();
+			}
+		});
+
+		/* Create a JButton for the Exit button */
+		JButton exit = new JButton("Exit");
+		// exit.setBounds(30,100,100,40); /* x axis, y axis, width, height */
+		exit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				System.exit(0);
+			}
+		});
+
+		frame.add(restart);
+		restart.setBounds(100, 550, 100, 40);// x axis, y axis, width, height
+		frame.add(exit);
+		// exit.setBounds(100,520,100,40);//x axis, y axis, width, height
+
+		/* makes sure the JFrame is visible */
+		frame.setVisible(true); 
+	}
+
+	public void setBoardXorO(ArrayList<JButton> board) {
+		JButton button = new JButton();
+		for (int i = 0; i<9; i++) {
+			button = board.get(i);
+			if (winOrLose(xSpots)) button.setIcon(new ImageIcon("X.png"));
+			if (winOrLose(oSpots)) button.setIcon(new ImageIcon("O.png"));
+		}
+
+	}
+
+	// method to hide boards
+	public void hideBoard(ArrayList<JButton> board) {
+		for (int i = 0; i < 9; i++) {
+			board.get(i).setVisible(false);
+		}
+	}
+
+	// method to expose board
+	public void showBoard(ArrayList<JButton> board) {
+		for (int i = 0; i < 9; i++) {
+			board.get(i).setVisible(true);
+		}
+	}
+
+	/** Tests 9x9 board to see if it has a combination of winning paths
+	 * @param locations are the different X or O locations. 
+	 * @return true if 3 Xs or 3Os in a row horizontal, vertical, or diagonal
+	 */
+	public boolean winOrLose(ArrayList<Integer> locations) {
+		boolean result = false;
+		if (locations.contains(0) && locations.contains(1) && locations.contains(2)) {
+			result = true;
+			winAction(locations);
+		} else if (locations.contains(3) && locations.contains(4) && locations.contains(5)) {
+			result = true;
+			winAction(locations);
+		} else if (locations.contains(6) && locations.contains(7) && locations.contains(8)) {
+			result = true;
+			winAction(locations);
+		} else if (locations.contains(0) && locations.contains(3) && locations.contains(6)) {
+			result = true;
+			winAction(locations);
+		} else if (locations.contains(1) && locations.contains(4) && locations.contains(7)) {
+			result = true;
+			winAction(locations);
+		} else if (locations.contains(2) && locations.contains(5) && locations.contains(8)) {
+			result = true;
+			winAction(locations);
+		} else if (locations.contains(0) && locations.contains(4) && locations.contains(8)) {
+			result = true;
+			winAction(locations);
+		} else if (locations.contains(6) && locations.contains(4) && locations.contains(2)) {
+			result = true;
+			winAction(locations);
+		} else {
+			result = false;
+		}
+		return result;
+	}
+
+	/**
+	 * Handles all the actions when someone wins.
+	 * For the small boards, will pop up with running count of X/O wins 
+	 * and the option to play the next game
+	 * @param determineWinner checks if oSpots or xSpots. If 
+	 */
+	public void winAction(ArrayList<Integer> determineWinner) {
+		JPanel panel = new JPanel();
+		if (determineWinner.equals(oSpots)) {
+			winningFrame.setVisible(true);
+			// TODO Need a restart button in this frame, and a counter to indicate each player's progress
+			oCount++;
+			grandWinAction(oCount);
+			System.out.println("O is the winner!");
+			setBoardXorO(currBoard);
+		} else {
+			winningFrame.setVisible(true);
+			//TODO Need a restart button in this frame, and a counter to indicate each player's progress
+			xCount++;
+			grandWinAction(xCount);
+			System.out.println("X is the winner!");
+			setBoardXorO(currBoard);
+		}
+		
+		JButton button = new JButton("Play Next Board");
+		/* brings back to original big board and clears the locations of Xs and Os */	
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				showBoard(board1);
+				showBoard(board2);
+				showBoard(board3);
+				showBoard(board4);
+				showBoard(board5);
+				showBoard(board6);
+				showBoard(board7);
+				showBoard(board8);
+				showBoard(board9);
+				frame.setTitle("Which Board?: " + player1 + " Picks");
+				xSpots.clear();
+				oSpots.clear();		
+			}
+		});
+		JLabel label0 = new JLabel("//n Congratulations!");
+		JLabel label1 = new JLabel("Score:");
+		JLabel label2 = new JLabel("Player O:" + oCount);
+		JLabel label3 = new JLabel("Player X:" + xCount);
+		panel.add(label0);
+		panel.add(label1);
+		panel.add(label2);
+		panel.add(label3);
+		panel.add(button);
+		winningFrame.add(panel);
+		//			winningFrame.dispose();		
+	}
+public void grandWinAction(int count) {
+	if(count >= 3) {
+		grandFrame.setVisible(true);
+		JLabel label1 = new JLabel("Final Score:");
+		JLabel label2 = new JLabel("Player O:" + oCount);
+		JLabel label3 = new JLabel("Player X:" + xCount);
+		JButton button = new JButton("Play Again!");/* Implements same action listener as another restart button */
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				for (int i = 0; i < 81; i++) {
+					buttonArray[i].setText(" ");
+					xSpots.clear();
+					oSpots.clear();
+				}	
+			}
+		});
+		grandFrame.add(button);
+		grandFrame.add(label1);
+		grandFrame.add(label2);
+		grandFrame.add(label3);
+	}
+}
+}
