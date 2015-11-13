@@ -1,7 +1,0 @@
-private Graphics2D paintbrush;
-String msg = "GAME OVER!";
-    	Font f = new Font(Font.SANS_SERIF, Font.BOLD, 90);
-    	Rectangle2D r = f.getStringBounds(msg, this.paintbrush.getFontRenderContext());
-    	this.paintbrush.setFont(f);
-    	this.paintbrush.setColor(Color.RED);
-    	this.paintbrush.drawString(msg, 400-(int)r.getWidth()/2, 300);
