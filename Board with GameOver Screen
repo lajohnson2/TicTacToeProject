@@ -83,7 +83,7 @@ public class Board extends JFrame {
 					button.setText("O");
 					UIManager.put("Button.font",
 							new javax.swing.plaf.FontUIResource(
-									"Century Gothic", Font.BOLD, 22));
+									"Century Gothic", Font.BOLD, 30));
 					player1 = "X";
 					oSpots.add(Integer.parseInt(button.getName())); // adding
 																	// the
@@ -100,7 +100,7 @@ public class Board extends JFrame {
 					button.setText("X");
 					UIManager.put("Button.font",
 							new javax.swing.plaf.FontUIResource(
-									"Century Gothic", Font.BOLD, 22));
+									"Century Gothic", Font.BOLD, 30));
 					player2 = "O";
 					xSpots.add(Integer.parseInt(button.getName())); // adding
 																	// the
@@ -474,6 +474,8 @@ public class Board extends JFrame {
 					frame.setTitle("Which Board?: " + player1 + " Picks");
 					xSpots.clear();
 					oSpots.clear();
+					winningOFrame.setVisible(false);
+					dispose();
 				}
 			});
 			panel.add(button);
@@ -482,7 +484,6 @@ public class Board extends JFrame {
 			panel.add(label2);
 			panel.add(label3);
 			winningOFrame.add(panel);
-			winningOFrame.dispose();
 		} else {
 			winningXFrame.setVisible(true);
 			//Need a restart button in this frame, and a counter to indicate each player's progress
@@ -515,7 +516,8 @@ public class Board extends JFrame {
 					frame.setTitle("Which Board?: " + player1 + " Picks");
 					xSpots.clear();
 					oSpots.clear();
-					winningOFrame.dispose();
+					winningOFrame.setVisible(false);
+					dispose();
 				}
 			});
 			panel.add(button);
