@@ -1,0 +1,58 @@
+		setXO = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				JButton button = (JButton) event.getSource();
+					if(count % 2 == 0) {
+						player1 = "X";
+						boolean check = false;
+						for(int i = 0; i < xSpots.size(); i++) {
+							for (int j = 0; j < oSpots.size(); j++) {
+								int convertbutton = Integer.parseInt(button.getName());
+								if(xSpots.get(i) == convertbutton || oSpots.get(j) == convertbutton) {
+									check = true;
+								}
+							}
+						}
+						if(!check) {
+							count++;
+							button.setText("O");
+							UIManager.put("Button.font",
+									new javax.swing.plaf.FontUIResource(
+											"Century Gothic", Font.BOLD, 30));
+							
+							oSpots.add(Integer.parseInt(button.getName())); 
+							
+							System.out.println(winOrLose(oSpots));
+						} else {
+							System.out.println("Spot already taken!");
+						}
+						
+					} else {
+						player2 = "O";
+						boolean check = false;
+						for(int i = 0; i < oSpots.size(); i++) {
+							for (int j = 0; j < xSpots.size(); j++) {
+								int convertbutton = Integer.parseInt(button.getName());
+								if(oSpots.get(i) == convertbutton || xSpots.get(j) == convertbutton) {
+									check = true;
+								}
+							}
+						}
+					if(!check) {
+						count++;
+						button.setText("X");
+						UIManager.put("Button.font",
+								new javax.swing.plaf.FontUIResource(
+										"Century Gothic", Font.BOLD, 30));
+						xSpots.add(Integer.parseInt(button.getName())); 
+						
+						System.out.println(winOrLose(xSpots)); 
+				
+					} else {
+						System.out.println("Spot already taken!");
+					}
+					
+					}
+					
+			}
+		};
