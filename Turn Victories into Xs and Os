@@ -397,6 +397,9 @@ public class Board extends JFrame {
 				frame.setTitle("Which Board?: " + player1 + " Picks");
 				xSpots.clear();
 				oSpots.clear();
+				
+				
+				
 			}
 		});
 		frame.add(restart);
@@ -457,8 +460,12 @@ public class Board extends JFrame {
 				&& locations.contains(2)) {
 			result = true;
 			winAction(locations);
-		} else {
-			result = false;
+		} else  if(locations.contains(0) && locations.contains(4)&&locations.contains(8)){
+			result = true;
+			winAction(locations);
+		} else if(locations.size() == 5) {
+			result = true;
+			winAction(locations);
 		}
 		return result;
 	}
@@ -525,15 +532,15 @@ public class Board extends JFrame {
 		for (int i = 0; i < 81; i++) {
 			if (bigBoardPosition == 1) {
 					if(oWinner==true){
-						buttonArray[0].setBackground(Color.WHITE);
-						buttonArray[1].setBackground(Color.WHITE);
-						buttonArray[2].setBackground(Color.WHITE);
-						buttonArray[9].setBackground(Color.WHITE);
-						buttonArray[10].setBackground(Color.GREEN);
-						buttonArray[11].setBackground(Color.WHITE);
-						buttonArray[18].setBackground(Color.WHITE);
-						buttonArray[19].setBackground(Color.WHITE);
-						buttonArray[20].setBackground(Color.WHITE);
+						buttonArray[0].setBackground(Color.GREEN);
+						buttonArray[1].setBackground(Color.GREEN);
+						buttonArray[2].setBackground(Color.GREEN);
+						buttonArray[9].setBackground(Color.GREEN);
+						buttonArray[10].setBackground(Color.WHITE);
+						buttonArray[11].setBackground(Color.GREEN);
+						buttonArray[18].setBackground(Color.GREEN);
+						buttonArray[19].setBackground(Color.GREEN);
+						buttonArray[20].setBackground(Color.GREEN);
 					}
 					else if(xWinner==true){
 						buttonArray[0].setBackground(Color.GREEN);
@@ -549,15 +556,15 @@ public class Board extends JFrame {
 				}
 			if (bigBoardPosition == 2) {
 					if(oWinner==true){
-						buttonArray[3].setBackground(Color.WHITE);
-						buttonArray[4].setBackground(Color.WHITE);
-						buttonArray[5].setBackground(Color.WHITE);
-						buttonArray[12].setBackground(Color.WHITE);
-						buttonArray[13].setBackground(Color.GREEN);
-						buttonArray[14].setBackground(Color.WHITE);
-						buttonArray[21].setBackground(Color.WHITE);
-						buttonArray[22].setBackground(Color.WHITE);
-						buttonArray[23].setBackground(Color.WHITE);
+						buttonArray[3].setBackground(Color.GREEN);
+						buttonArray[4].setBackground(Color.GREEN);
+						buttonArray[5].setBackground(Color.GREEN);
+						buttonArray[12].setBackground(Color.GREEN);
+						buttonArray[13].setBackground(Color.WHITE);
+						buttonArray[14].setBackground(Color.GREEN);
+						buttonArray[21].setBackground(Color.GREEN);
+						buttonArray[22].setBackground(Color.GREEN);
+						buttonArray[23].setBackground(Color.GREEN);
 					}
 					else if(xWinner==true){
 						buttonArray[3].setBackground(Color.GREEN);
@@ -573,15 +580,15 @@ public class Board extends JFrame {
 				}
 			if (bigBoardPosition == 3) {
 				if(oWinner==true){
-					buttonArray[6].setBackground(Color.WHITE);
-					buttonArray[7].setBackground(Color.WHITE);
-					buttonArray[8].setBackground(Color.WHITE);
-					buttonArray[15].setBackground(Color.WHITE);
-					buttonArray[16].setBackground(Color.GREEN);
-					buttonArray[17].setBackground(Color.WHITE);
-					buttonArray[24].setBackground(Color.WHITE);
-					buttonArray[25].setBackground(Color.WHITE);
-					buttonArray[26].setBackground(Color.WHITE);
+					buttonArray[6].setBackground(Color.GREEN);
+					buttonArray[7].setBackground(Color.GREEN);
+					buttonArray[8].setBackground(Color.GREEN);
+					buttonArray[15].setBackground(Color.GREEN);
+					buttonArray[16].setBackground(Color.WHITE);
+					buttonArray[17].setBackground(Color.GREEN);
+					buttonArray[24].setBackground(Color.GREEN);
+					buttonArray[25].setBackground(Color.GREEN);
+					buttonArray[26].setBackground(Color.GREEN);
 				}
 				else if(xWinner==true){
 					buttonArray[6].setBackground(Color.GREEN);
@@ -597,15 +604,15 @@ public class Board extends JFrame {
 			}
 			if (bigBoardPosition == 4) {
 				if(oWinner==true){
-					buttonArray[27].setBackground(Color.WHITE);
-					buttonArray[28].setBackground(Color.WHITE);
-					buttonArray[29].setBackground(Color.WHITE);
-					buttonArray[36].setBackground(Color.WHITE);
-					buttonArray[37].setBackground(Color.GREEN);
-					buttonArray[38].setBackground(Color.WHITE);
-					buttonArray[45].setBackground(Color.WHITE);
-					buttonArray[46].setBackground(Color.WHITE);
-					buttonArray[47].setBackground(Color.WHITE);
+					buttonArray[27].setBackground(Color.GREEN);
+					buttonArray[28].setBackground(Color.GREEN);
+					buttonArray[29].setBackground(Color.GREEN);
+					buttonArray[36].setBackground(Color.GREEN);
+					buttonArray[37].setBackground(Color.WHITE);
+					buttonArray[38].setBackground(Color.GREEN);
+					buttonArray[45].setBackground(Color.GREEN);
+					buttonArray[46].setBackground(Color.GREEN);
+					buttonArray[47].setBackground(Color.GREEN);
 				}
 				else if(xWinner==true){
 					buttonArray[27].setBackground(Color.GREEN);
@@ -621,15 +628,15 @@ public class Board extends JFrame {
 			}
 			if (bigBoardPosition == 5) {
 				if(oWinner==true){
-					buttonArray[30].setBackground(Color.WHITE);
-					buttonArray[31].setBackground(Color.WHITE);
-					buttonArray[32].setBackground(Color.WHITE);
-					buttonArray[39].setBackground(Color.WHITE);
-					buttonArray[40].setBackground(Color.GREEN);
-					buttonArray[41].setBackground(Color.WHITE);
-					buttonArray[48].setBackground(Color.WHITE);
-					buttonArray[49].setBackground(Color.WHITE);
-					buttonArray[50].setBackground(Color.WHITE);
+					buttonArray[30].setBackground(Color.GREEN);
+					buttonArray[31].setBackground(Color.GREEN);
+					buttonArray[32].setBackground(Color.GREEN);
+					buttonArray[39].setBackground(Color.GREEN);
+					buttonArray[40].setBackground(Color.WHITE);
+					buttonArray[41].setBackground(Color.GREEN);
+					buttonArray[48].setBackground(Color.GREEN);
+					buttonArray[49].setBackground(Color.GREEN);
+					buttonArray[50].setBackground(Color.GREEN);
 				}
 				else if(xWinner==true){
 					buttonArray[30].setBackground(Color.GREEN);
@@ -645,15 +652,15 @@ public class Board extends JFrame {
 			}
 			if (bigBoardPosition == 6) {
 				if(oWinner==true){
-					buttonArray[33].setBackground(Color.WHITE);
-					buttonArray[34].setBackground(Color.WHITE);
-					buttonArray[35].setBackground(Color.WHITE);
-					buttonArray[42].setBackground(Color.WHITE);
-					buttonArray[43].setBackground(Color.GREEN);
-					buttonArray[44].setBackground(Color.WHITE);
-					buttonArray[51].setBackground(Color.WHITE);
-					buttonArray[52].setBackground(Color.WHITE);
-					buttonArray[53].setBackground(Color.WHITE);
+					buttonArray[33].setBackground(Color.GREEN);
+					buttonArray[34].setBackground(Color.GREEN);
+					buttonArray[35].setBackground(Color.GREEN);
+					buttonArray[42].setBackground(Color.GREEN);
+					buttonArray[43].setBackground(Color.WHITE);
+					buttonArray[44].setBackground(Color.GREEN);
+					buttonArray[51].setBackground(Color.GREEN);
+					buttonArray[52].setBackground(Color.GREEN);
+					buttonArray[53].setBackground(Color.GREEN);
 				}
 				else if(xWinner==true){
 					buttonArray[33].setBackground(Color.GREEN);
@@ -669,15 +676,15 @@ public class Board extends JFrame {
 			}
 			if (bigBoardPosition == 7) {
 				if(oWinner==true){
-					buttonArray[54].setBackground(Color.WHITE);
-					buttonArray[55].setBackground(Color.WHITE);
-					buttonArray[56].setBackground(Color.WHITE);
-					buttonArray[63].setBackground(Color.WHITE);
-					buttonArray[64].setBackground(Color.GREEN);
-					buttonArray[65].setBackground(Color.WHITE);
-					buttonArray[72].setBackground(Color.WHITE);
-					buttonArray[73].setBackground(Color.WHITE);
-					buttonArray[74].setBackground(Color.WHITE);
+					buttonArray[54].setBackground(Color.GREEN);
+					buttonArray[55].setBackground(Color.GREEN);
+					buttonArray[56].setBackground(Color.GREEN);
+					buttonArray[63].setBackground(Color.GREEN);
+					buttonArray[64].setBackground(Color.WHITE);
+					buttonArray[65].setBackground(Color.GREEN);
+					buttonArray[72].setBackground(Color.GREEN);
+					buttonArray[73].setBackground(Color.GREEN);
+					buttonArray[74].setBackground(Color.GREEN);
 				}
 				else if(xWinner==true){
 					buttonArray[54].setBackground(Color.GREEN);
@@ -693,15 +700,15 @@ public class Board extends JFrame {
 			}
 			if (bigBoardPosition == 8) {
 				if(oWinner==true){
-					buttonArray[57].setBackground(Color.WHITE);
-					buttonArray[58].setBackground(Color.WHITE);
-					buttonArray[59].setBackground(Color.WHITE);
-					buttonArray[66].setBackground(Color.WHITE);
-					buttonArray[67].setBackground(Color.GREEN);
-					buttonArray[68].setBackground(Color.WHITE);
-					buttonArray[75].setBackground(Color.WHITE);
-					buttonArray[76].setBackground(Color.WHITE);
-					buttonArray[77].setBackground(Color.WHITE);
+					buttonArray[57].setBackground(Color.GREEN);
+					buttonArray[58].setBackground(Color.GREEN);
+					buttonArray[59].setBackground(Color.GREEN);
+					buttonArray[66].setBackground(Color.GREEN);
+					buttonArray[67].setBackground(Color.WHITE);
+					buttonArray[68].setBackground(Color.GREEN);
+					buttonArray[75].setBackground(Color.GREEN);
+					buttonArray[76].setBackground(Color.GREEN);
+					buttonArray[77].setBackground(Color.GREEN);
 				}
 				else if(xWinner==true){
 					buttonArray[57].setBackground(Color.GREEN);
@@ -717,26 +724,26 @@ public class Board extends JFrame {
 			}
 			if (bigBoardPosition == 9) {
 				if(oWinner==true){
-					buttonArray[61].setBackground(Color.WHITE);
-					buttonArray[62].setBackground(Color.WHITE);
-					buttonArray[63].setBackground(Color.WHITE);
+					buttonArray[60].setBackground(Color.GREEN);
+					buttonArray[61].setBackground(Color.GREEN);
+					buttonArray[62].setBackground(Color.GREEN);
+					buttonArray[69].setBackground(Color.GREEN);
 					buttonArray[70].setBackground(Color.WHITE);
 					buttonArray[71].setBackground(Color.GREEN);
-					buttonArray[72].setBackground(Color.WHITE);
-					buttonArray[79].setBackground(Color.WHITE);
-					buttonArray[80].setBackground(Color.WHITE);
-					buttonArray[81].setBackground(Color.WHITE);
+					buttonArray[78].setBackground(Color.GREEN);
+					buttonArray[79].setBackground(Color.GREEN);
+					buttonArray[80].setBackground(Color.GREEN);
 				}
 				else if(xWinner==true){
-					buttonArray[61].setBackground(Color.GREEN);
-					buttonArray[62].setBackground(Color.WHITE);
-					buttonArray[63].setBackground(Color.GREEN);
-					buttonArray[70].setBackground(Color.WHITE);
-					buttonArray[71].setBackground(Color.GREEN);
-					buttonArray[72].setBackground(Color.WHITE);
-					buttonArray[79].setBackground(Color.GREEN);
-					buttonArray[80].setBackground(Color.WHITE);
-					buttonArray[81].setBackground(Color.GREEN);
+					buttonArray[60].setBackground(Color.GREEN);
+					buttonArray[61].setBackground(Color.WHITE);
+					buttonArray[62].setBackground(Color.GREEN);
+					buttonArray[69].setBackground(Color.WHITE);
+					buttonArray[70].setBackground(Color.GREEN);
+					buttonArray[71].setBackground(Color.WHITE);
+					buttonArray[78].setBackground(Color.GREEN);
+					buttonArray[79].setBackground(Color.WHITE);
+					buttonArray[80].setBackground(Color.GREEN);
 				}
 			}
 		}
@@ -756,7 +763,7 @@ public class Board extends JFrame {
 											(oSpotsBig.contains(1)
 													&& oSpotsBig.contains(4) && oSpotsBig.contains(7))
 													|| (oSpotsBig.contains(3)
-															&& oSpotsBig.contains(6) && oSpotsBig.contains(9)) ){
+															&& oSpotsBig.contains(6) && oSpotsBig.contains(9))||oSpotsBig.size()==5 ){
 				checkBig=true;
 			}
 		}
@@ -772,7 +779,7 @@ public class Board extends JFrame {
 											(xSpotsBig.contains(1)
 													&& xSpotsBig.contains(4) && xSpotsBig.contains(7))
 													|| (xSpotsBig.contains(3)
-															&& xSpotsBig.contains(6) && xSpotsBig.contains(9)) ){
+															&& xSpotsBig.contains(6) && xSpotsBig.contains(9)) || xSpotsBig.size()==5){
 				checkBig=true;
 			}
 		}
@@ -880,5 +887,4 @@ public class Board extends JFrame {
 	}
 
 }
-
 
