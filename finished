@@ -68,7 +68,7 @@ public class TicTacToeBoard extends JFrame {
 		
 		/*setting up the tie frame */
 		tieFrame = new JFrame("There was a Tie!");
-		tieFrame.setSize(350,200);
+		tieFrame.setSize(600,500);
 		tieFrame.setResizable(false);
 		tieFrame.setVisible(false);
 		tieFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -476,7 +476,8 @@ public class TicTacToeBoard extends JFrame {
 			
 		});
 		
-		JButton buttonTie = new JButton("Play Another Board!"); //created another button for tie
+		JButton buttonTie = new JButton(); //created another button for tie
+		buttonTie.setIcon(new ImageIcon("playanother.gif"));
 		buttonTie.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -526,19 +527,18 @@ public class TicTacToeBoard extends JFrame {
 		}
 		
 		/* Handling a Tie */
-		String Tlabel1 = "There was a Tie!";
-		String Tlabel2 = "The player with the least amount of spots on the board wins!";
-		String Tlabel3 = "";
+		
+		
 		if(tie == true){
 				/* testing to see which player has less spots on the board, and that person will win */
 				if(oSpots.size() < xSpots.size()){
-					Tlabel3 = "Congratulations! Winner Picks First!";
+				
 					oSpotsBig.add(bigBoardPosition);
 					oWinner = true;
 					xWinner = false;
 					turnGray(bigBoardPosition);
 				}else{
-					Tlabel3 = "Congratulations! Winner Picks First!";
+					
 					xSpotsBig.add(bigBoardPosition);
 					oWinner = false;
 					xWinner = true;
@@ -548,12 +548,8 @@ public class TicTacToeBoard extends JFrame {
 				tieFrame.setTitle("There was a Tie!");
 				tieFrame.setVisible(true);
 		}
-		JLabel tieLabel1 = new JLabel(Tlabel1);
-		JLabel tieLabel2 = new JLabel(Tlabel2);
-		JLabel tieLabel3 = new JLabel(Tlabel3);
+		JLabel tieLabel1 = new JLabel("<html><font size=18><center>There was a tie!<br> The player with the least <br> amount of spots wins! <br> Congratulations! <br> Winner picks first! </b></html></font></center>");
 		panelTie.add(tieLabel1);
-		panelTie.add(tieLabel2);
-		panelTie.add(tieLabel3);
 		panel.add(label0);
 		panel.add(button);
 		panelTie.add(buttonTie);
@@ -686,7 +682,7 @@ public class TicTacToeBoard extends JFrame {
 					(oSpotsBig.contains(1) && oSpotsBig.contains(4) && oSpotsBig.contains(7)) || 
 					(oSpotsBig.contains(3) && oSpotsBig.contains(6) && oSpotsBig.contains(9))) {
 				checkBig=true;
-				winner = 1;
+				winner = 4;
 			}
 		
 			/*checking to see if X won on big board without a tie */
@@ -738,17 +734,17 @@ public class TicTacToeBoard extends JFrame {
 		
 		/*if statements determine which player won and whether they won with a tie or not */
 		/* winner is a field that we set in the checkGrandVictory() method */
-		if(winner == 1){
+		if(winner == 4){
 			label1.setText("<html><font size=22><center>O is the <b>grand winner!<br> You Pick First Next Game!</b></html></font></center>");
 		}
-		if(winner == 0){
+		else if(winner == 0){
 			label1.setText("<html><font size=22><center>X is the <b>grand winner!<br> You Pick First Next Game!</b></html></font></center>");
 		}
-		if(winner == 3){
+		else if(winner == 3){
 			label1.setText("<html><font size=22><center>O is the <b>grand winner!<br> You Pick First Next Game!</b></html></font></center>");
 			tie.setText(grandTieLabel);
 		}
-		if(winner ==2){
+		else if(winner ==2){
 			label1.setText("<html><font size=22><center>X is the <b>grand winner!<br> You Pick First Next Game!</b></html></font></center>");
 			tie.setText(grandTieLabel);
 		}
