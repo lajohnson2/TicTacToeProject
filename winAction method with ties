@@ -1,0 +1,90 @@
+	public void winAction(ArrayList<Integer> determineWinner, boolean tie) {
+		JPanel panel = new JPanel();
+	//	JPanel panelTie = new JPanel(); //created another panel for the tie
+		JLabel label0=null;// = new JLabel("<html><font size=10><center>Congratulations!<br> You are the Winner!");
+		JButton button = new JButton("Play Another Board!");
+		button.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (int i = 0; i < 81; i++) buttonArray[i].setText(" ");
+				/* brings back to original big board and clears the locations of X and O */
+				showBoard(board1);
+				showBoard(board2);
+				showBoard(board3);
+				showBoard(board4);
+				showBoard(board5);
+				showBoard(board6);
+				showBoard(board7);
+				showBoard(board8);
+				showBoard(board9);
+				frame.setTitle("Which Board?: " + player1 + " Picks");
+				xSpots.clear();
+				oSpots.clear();
+				winningFrame.setVisible(false);
+				tieFrame.setVisible(false);
+				dispose();
+			}	
+			
+			
+		});		
+	
+		if(determineWinner.equals(oSpots) && tie == false){
+			oWinner=true;
+			xWinner=false;
+			winningFrame.setTitle("O is the winner!");
+			winningFrame.setVisible(true);
+			oCount++;
+			turnGray(bigBoardPosition);
+			oSpotsBig.add(bigBoardPosition);
+			
+		}
+		else if(determineWinner.equals(xSpots)&& tie == false){
+			xWinner=true;
+			oWinner=false;
+			winningFrame.setTitle("X is the winner!");
+			winningFrame.setVisible(true);
+			xCount++;
+			turnGray(bigBoardPosition);
+			xSpotsBig.add(bigBoardPosition);
+		}
+
+		if(tie == true){
+			winningFrame.setTitle("There was a Tie!");
+				if(oSpots.size() ==4){
+					label0 = new JLabel("<html><font size=10>There was a Tie! <br> The player with the least amount of spots on the board wins! <br> Congratulations O!");
+					oSpotsBig.add(bigBoardPosition);
+					oWinner = true;
+					xWinner = false;
+					turnGray(bigBoardPosition);
+					winningFrame.setTitle("There was a Tie!");
+					winningFrame.setVisible(true);
+				}
+				if(xSpots.size() ==4){
+					label0 = new JLabel("<html><font size=10>There was a Tie! <br> The player with the least amount of spots on the board wins! <br> Congratulations X!");
+					xSpotsBig.add(bigBoardPosition);
+					oWinner = false;
+					xWinner = true;
+					turnGray(bigBoardPosition);
+					winningFrame.setTitle("There was a Tie!");
+					winningFrame.setVisible(true);
+				}
+		}
+		else{
+			label0 = new JLabel("<html><font size=10><center>Congratulations!<br> You are the Winner!</html></font>");
+		}
+//		JLabel tieLabel1 = new JLabel(Tlabel1);
+//		JLabel tieLabel2 = new JLabel(Tlabel2);
+//		JLabel tieLabel3 = new JLabel(Tlabel3);
+//		panelTie.add(tieLabel1);
+//		panelTie.add(tieLabel2);
+//		panelTie.add(tieLabel3);
+		panel.add(label0);
+		panel.add(button);
+//		panelTie.add(buttonTie);
+	//	tieFrame.add(panelTie);
+		winningFrame.add(panel);
+		boolean Xwin = checkGrandVictory(xSpotsBig);
+		boolean Owin = checkGrandVictory(oSpotsBig);
+		grandWinAction(Xwin);
+		grandWinAction(Owin);
+		}
