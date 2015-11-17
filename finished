@@ -1,0 +1,804 @@
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.*;
+
+public class TicTacToeBoard extends JFrame {
+	
+	/**
+	 * Fields:
+	 */
+	private static boolean oWinner;  /* true if O wins , false if O looses */
+	private static boolean xWinner;	/* true if X wins , false if X looses */
+	private static byte winner;		/* byte to indicate the winner of the game and winner when ties occur on overall board */
+	private static JFrame frame;	/* main game frame */
+	private static JFrame tieFrame;	/* pop up frame when there is a tie */
+	private static JFrame grandFrame; /*pop up frame when there is a large win */
+	private static JFrame winningFrame; /* pop up frame when there is a small win that doesn't result from a tie */
+	private static JButton buttonArray[] = new JButton[81]; /*array list for all buttons */
+	private static String grandTieLabel = "Player with more victories wins in the case of a tie!"; 
+	private byte count = 0; /* count that is used to control clicks */
+	
+	private ActionListener setXO; /* action listener for basic clicking */
+	
+	/*Fields dealing with the individual 3x3 boards*/
+	private static ArrayList<JButton> board1 = new ArrayList<JButton>();
+	private static ArrayList<JButton> board2 = new ArrayList<JButton>();
+	private static ArrayList<JButton> board3 = new ArrayList<JButton>();
+	private static ArrayList<JButton> board4 = new ArrayList<JButton>();
+	private static ArrayList<JButton> board5 = new ArrayList<JButton>();
+	private static ArrayList<JButton> board6 = new ArrayList<JButton>();
+	private static ArrayList<JButton> board7 = new ArrayList<JButton>();
+	private static ArrayList<JButton> board8 = new ArrayList<JButton>();
+	private static ArrayList<JButton> board9 = new ArrayList<JButton>();
+	
+	/*Fields dealing with what we need to calculate the winner*/
+	private static ArrayList<Integer> oSpots = new ArrayList<Integer>(); /* spots O occupies within each small board */
+	private static ArrayList<Integer> xSpots = new ArrayList<Integer>(); /* spots X occupies within each small board */
+	private static ArrayList<Integer> oSpotsBig = new ArrayList<Integer>(); /* spots O wins within the large board */
+	private static ArrayList<Integer> xSpotsBig = new ArrayList<Integer>(); /* spots X wins within the large board */
+	private static int bigBoardPosition;  /* will change with the current small board being played on */
+	private static Color mint = new Color(117,201, 130); /* color for the board */
+	
+	/** initiates the tic tac toe game **/
+	public static void main(String[] args) {
+		new TicTacToeBoard();
+
+	}
+
+	/** board constructor **/
+	public TicTacToeBoard() {
+		/* setting up the winning Frame */
+		winningFrame = new JFrame("O is the winner!");
+		winningFrame.setSize(700, 350);
+		winningFrame.setResizable(false);
+		winningFrame.setVisible(false);
+		winningFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		
+		/*setting up the grand frame */
+		grandFrame = new JFrame("Grand Victory!");
+		grandFrame.setSize(600, 600);
+		grandFrame.setResizable(false);
+		grandFrame.setVisible(false);
+		grandFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		
+		/*setting up the tie frame */
+		tieFrame = new JFrame("There was a Tie!");
+		tieFrame.setSize(350,200);
+		tieFrame.setResizable(false);
+		tieFrame.setVisible(false);
+		tieFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+		/* Sets up the game */
+		frame = new JFrame("Tic Tac Toe 9");
+		frame.setSize(600, 600);
+		frame.setResizable(false);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		frame.setLayout(new GridLayout(10, 9));
+
+		/* setXO makes the button's text either O or X*/
+		/* once each button's text is set, it also calls the winOrLose method to see if it was a winning move */
+		setXO = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				JButton button = (JButton) event.getSource();
+				if (count % 2 == 0) {
+					
+					boolean check = false;
+					for (int i = 0; i < oSpots.size(); i++) {
+						for (int j = 0; j < xSpots.size(); j++) {
+							int convertbutton = Integer.parseInt(button.getName());
+							if (oSpots.get(i) == convertbutton || xSpots.get(j) == convertbutton) check = true;
+						}
+					}
+					if (!check) {
+						count++;
+						button.setIcon(new ImageIcon("X.gif"));
+//						button.setText("X");
+//						UIManager.put("Button.font",
+//								new javax.swing.plaf.FontUIResource("Century Gothic", Font.BOLD, 35));
+						xSpots.add(Integer.parseInt(button.getName()));  /* adds the location of the x to xSpots arrayList */
+						if(winOrLose(xSpots)){
+									count = 0;
+								}
+					} else System.out.println("Spot already taken!");
+				} else {
+					boolean check = false;
+					for (int i = 0; i < xSpots.size(); i++) {
+						for (int j = 0; j < oSpots.size(); j++) {
+							int convertbutton = Integer.parseInt(button
+									.getName());
+							if (xSpots.get(i) == convertbutton || oSpots.get(j) == convertbutton) check = true;
+						}
+					}
+					if (!check) {
+						count++;
+						button.setIcon(new ImageIcon("O.gif"));
+//						button.setText("O");
+//						UIManager.put("Button.font",
+//								new javax.swing.plaf.FontUIResource("Century Gothic", Font.BOLD, 35));
+						oSpots.add(Integer.parseInt(button.getName()));  /* adds the new o location to the oSpots arrayList */
+						if(winOrLose(oSpots)){
+							count = 1;
+						}
+					} else System.out.println("Spot already taken!");
+				}
+			}
+		};
+
+		for (int i = 0; i < 81; i++) {
+			buttonArray[i] = new JButton();
+			final int buttonNumber = i;
+			buttonArray[buttonNumber].addActionListener(setXO); /* adds the setXO action listener to every button on the board */
+			
+			/* The following code sets each of the small 3x3 boards.*/
+			/* The small board being played will be the only visible one */
+			if (i <= 2 || (i <= 11 && i >= 9) || (i <= 20 && i >= 18)) {
+				buttonArray[i].setBackground(mint);
+				buttonArray[i].setOpaque(true);
+				board1.add(buttonArray[i]);
+				String name = String.valueOf(board1.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber].addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								bigBoardPosition=1;
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 1");
+							}
+						});
+
+			} else if ((i >= 3 && i <= 5) || (i >= 12 && i <= 14) || (i >= 21 && i <= 23)) {
+				buttonArray[i].setBackground(Color.WHITE);
+				buttonArray[i].setOpaque(true);
+				board2.add(buttonArray[i]);
+				String name = String.valueOf(board2.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber].addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								bigBoardPosition=2;
+								hideBoard(board1);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 2");
+							}
+						});
+			} else if ((i >= 6 && i <= 8) || (i >= 15 && i <= 17) || (i >= 24 && i <= 26)) {
+				buttonArray[i].setBackground(mint);
+				buttonArray[i].setOpaque(true);
+				board3.add(buttonArray[i]);
+				String name = String.valueOf(board3.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber].addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								bigBoardPosition=3;
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 3");
+							}
+						});
+			} else if ((i >= 27 && i <= 29) || (i >= 36 && i <= 38) || (i >= 45 && i <= 47)) {
+				buttonArray[i].setBackground(Color.WHITE);
+				buttonArray[i].setOpaque(true);
+				board4.add(buttonArray[i]);
+				String name = String.valueOf(board4.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber].addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								bigBoardPosition=4;
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 4");
+							}
+						});
+			} else if ((i >= 30 && i <= 32) || (i >= 39 && i <= 41) || (i >= 48 && i <= 50)) {
+				buttonArray[i].setBackground(mint);
+				buttonArray[i].setOpaque(true);
+				board5.add(buttonArray[i]);
+				String name = String.valueOf(board5.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber].addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								bigBoardPosition=5;
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 5");
+							}
+						});
+			} else if ((i >= 33 && i <= 35) || (i >= 42 && i <= 44) || (i >= 51 && i <= 53)) {
+				buttonArray[i].setBackground(Color.WHITE);
+				board6.add(buttonArray[i]);
+				String name = String.valueOf(board6.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber].addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								bigBoardPosition=6;
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board7);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 6");
+							}
+						});
+			} else if ((i >= 54 && i <= 56) || (i >= 63 && i <= 65) || (i >= 72 && i <= 74)) {
+				buttonArray[i].setBackground(mint);
+				buttonArray[i].setOpaque(true);
+				board7.add(buttonArray[i]);
+				String name = String.valueOf(board7.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber].addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								bigBoardPosition=7;
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 7");
+							}
+						});
+			} else if ((i >= 57 && i <= 59) || (i >= 66 && i <= 68) || (i >= 75 && i <= 77)) {
+				buttonArray[i].setBackground(Color.WHITE);
+				buttonArray[i].setOpaque(true);
+				board8.add(buttonArray[i]);
+				String name = String.valueOf(board8.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber].addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								bigBoardPosition=8;
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board9);
+								frame.setTitle("Board 8");
+							}
+						});
+			} else {
+				buttonArray[i].setBackground(mint);
+				buttonArray[i].setOpaque(true);
+				board9.add(buttonArray[i]);
+				String name = String.valueOf(board9.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber]
+						.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								bigBoardPosition=9;
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board8);
+								frame.setTitle("Board 9");
+							}
+						});
+			}
+
+
+			frame.add(buttonArray[i]);
+			buttonArray[i].setVisible(true);
+
+		}
+
+		JButton restart = new JButton();/* creates instance of Jbutton for the restart button */
+		restart.setBounds(130, 100, 100, 40);
+		restart.setIcon(new ImageIcon("restartbutton.gif"));
+
+		JButton exit = new JButton("Exit");/* creates instance of Jbutton for the exit button */
+		exit.setIcon(new ImageIcon("exit.gif"));
+
+		// exit.setBounds(30,100,100,40);//x axis, y axis, width, height
+		exit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				System.exit(0);
+			}
+		});
+		ActionListener restartAL = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				for (int i = 0; i < 81; i++) {
+					buttonArray[i].setIcon(null);
+				}
+				for (int i = 0; i < 9; i++) {
+					board1.get(i).setBackground(mint);
+					board2.get(i).setBackground(Color.WHITE);
+					board3.get(i).setBackground(mint);
+					board4.get(i).setBackground(Color.WHITE);
+					board5.get(i).setBackground(mint);
+					board6.get(i).setBackground(Color.WHITE);
+					board7.get(i).setBackground(mint);
+					board8.get(i).setBackground(Color.WHITE);
+					board9.get(i).setBackground(mint);	
+				}
+				/* brings back to original big board and clears the locations of X and O */
+				showBoard(board1);
+				showBoard(board2);
+				showBoard(board3);
+				showBoard(board4);
+				showBoard(board5);
+				showBoard(board6);
+				showBoard(board7);
+				showBoard(board8);
+				showBoard(board9);
+				frame.setTitle("Tic Tac Toe 9");
+				xSpots.clear();
+				oSpots.clear();	
+				xSpotsBig.clear();
+				oSpotsBig.clear();
+			}
+		};
+		restart.addActionListener(restartAL);
+		frame.add(restart);
+		restart.setBounds(100, 550, 100, 40); /* x axis, y axis, width, height */
+		frame.add(exit);
+		// exit.setBounds(100,520,100,40); /* x axis, y axis, width, height*/
+
+		/* make sure the JFrame is visible */
+		frame.setVisible(true); 
+	}
+
+	/** method to hide not in-use boards (implemented in the constructor)*/
+	public void hideBoard(ArrayList<JButton> board) {
+		for (int i = 0; i < 9; i++) {
+			board.get(i).setVisible(false);
+		}
+	}
+
+	/** method to show boards */
+	public static void showBoard(ArrayList<JButton> board) {
+		for (int i = 0; i < 9; i++) {
+			board.get(i).setVisible(true);
+		}
+	}
+	/**tests the arrayList of a board to see if it has a combination of winning locations 
+	 * @return true if 3 in a row horizontally, vertically, or diagonally
+	 * @return false if no winning combination
+	 * if its a combination of winning methods, the winAction will be called on those locations
+	 */
+	public boolean winOrLose(ArrayList<Integer> locations) {
+		boolean result = false;
+		if (locations.contains(0) && locations.contains(1) && locations.contains(2)) {
+			result = true;
+			winAction(locations,false);
+		} else if (locations.contains(3) && locations.contains(4) && locations.contains(5)) {
+			result = true;
+			winAction(locations,false);
+		} else if (locations.contains(6) && locations.contains(7) && locations.contains(8)) {
+			result = true;
+			winAction(locations,false);
+		} else if (locations.contains(0) && locations.contains(3) && locations.contains(6)) {
+			result = true;
+			winAction(locations,false);
+		} else if (locations.contains(1) && locations.contains(4) && locations.contains(7)) {
+			result = true;
+			winAction(locations,false);
+		} else if (locations.contains(2) && locations.contains(5) && locations.contains(8)) {
+			result = true;
+			winAction(locations,false);
+		} else if (locations.contains(0) && locations.contains(4) && locations.contains(8)) {
+			result = true;
+			winAction(locations,false);
+		} else if (locations.contains(6) && locations.contains(4) && locations.contains(2)) {
+			result = true;
+			winAction(locations,false);
+		} else  if(locations.contains(0) && locations.contains(4) &&locations.contains(8)){
+			result = true;
+			winAction(locations,false);
+		} else if(locations.size() == 5) {  /* this condition tests for a tie */
+
+			winAction(locations,true);
+		}
+		return result;
+	}
+	
+	
+	/**
+	 * This method handles what happens when there is a winner
+	 * @param determineWinner - will be the arrayList of the winner
+	 * @param tie - will be true if there is a tie and false if it is a non-tie win
+	 */
+	public void winAction(ArrayList<Integer> determineWinner, boolean tie) {
+		JPanel panel = new JPanel();
+		JPanel panelTie = new JPanel(); /* created another panel for the tie*/
+		JLabel label0 = new JLabel("<html><font size=10><center>Congratulations!<br> You are the Winner! <br> You Pick First!");
+		JButton button = new JButton();
+		button.setIcon(new ImageIcon("playanother.gif"));
+		button.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (int i = 0; i < 81; i++) buttonArray[i].setIcon(null);
+				/* brings back to original big board and clears the locations of X and O */
+				showBoard(board1);
+				showBoard(board2);
+				showBoard(board3);
+				showBoard(board4);
+				showBoard(board5);
+				showBoard(board6);
+				showBoard(board7);
+				showBoard(board8);
+				showBoard(board9);
+				frame.setTitle("Tic Tac Toe 9");
+				xSpots.clear();
+				oSpots.clear();
+				winningFrame.setVisible(false);
+				tieFrame.setVisible(false);
+				dispose();
+			}	
+			
+			
+		});
+		
+		JButton buttonTie = new JButton("Play Another Board!"); //created another button for tie
+		buttonTie.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (int i = 0; i < 81; i++) buttonArray[i].setIcon(null);
+				/* brings back to original big board and clears the locations of X and O */
+				showBoard(board1);
+				showBoard(board2);
+				showBoard(board3);
+				showBoard(board4);
+				showBoard(board5);
+				showBoard(board6);
+				showBoard(board7);
+				showBoard(board8);
+				showBoard(board9);
+				frame.setTitle("Tic Tac Toe 9");
+				xSpots.clear();
+				oSpots.clear();
+				winningFrame.setVisible(false);
+				tieFrame.setVisible(false);
+				dispose();
+			}	
+			
+			
+		});
+		
+		/* what happens when O wins and there is no tie */
+		if(determineWinner.equals(oSpots) && tie == false){
+			oWinner=true;
+			xWinner=false;
+			winningFrame.setTitle("O is the winner!");
+			winningFrame.setVisible(true);
+			
+			turnGray(bigBoardPosition);
+			oSpotsBig.add(bigBoardPosition);
+			
+		}
+		
+		/* what happens when X wins and there is no tie */
+		else if(determineWinner.equals(xSpots)&& tie == false){
+			xWinner=true;
+			oWinner=false;
+			winningFrame.setTitle("X is the winner!");
+			winningFrame.setVisible(true);
+			
+			turnGray(bigBoardPosition);
+			xSpotsBig.add(bigBoardPosition);
+		}
+		
+		/* Handling a Tie */
+		String Tlabel1 = "There was a Tie!";
+		String Tlabel2 = "The player with the least amount of spots on the board wins!";
+		String Tlabel3 = "";
+		if(tie == true){
+				/* testing to see which player has less spots on the board, and that person will win */
+				if(oSpots.size() < xSpots.size()){
+					Tlabel3 = "Congratulations! Winner Picks First!";
+					oSpotsBig.add(bigBoardPosition);
+					oWinner = true;
+					xWinner = false;
+					turnGray(bigBoardPosition);
+				}else{
+					Tlabel3 = "Congratulations! Winner Picks First!";
+					xSpotsBig.add(bigBoardPosition);
+					oWinner = false;
+					xWinner = true;
+					turnGray(bigBoardPosition);
+				}
+				
+				tieFrame.setTitle("There was a Tie!");
+				tieFrame.setVisible(true);
+		}
+		JLabel tieLabel1 = new JLabel(Tlabel1);
+		JLabel tieLabel2 = new JLabel(Tlabel2);
+		JLabel tieLabel3 = new JLabel(Tlabel3);
+		panelTie.add(tieLabel1);
+		panelTie.add(tieLabel2);
+		panelTie.add(tieLabel3);
+		panel.add(label0);
+		panel.add(button);
+		panelTie.add(buttonTie);
+		tieFrame.add(panelTie);
+		winningFrame.add(panel);
+		
+		/* calling grandVictory methods to see if the small win was a winning move on the large board */
+		boolean checkWinner = checkGrandVictory();
+		grandWinAction(checkWinner);
+		}
+	
+	/**
+	 * After there is a winner, set the current board to either X or O 
+	 * using the background
+	 * @param bigBoardPosition = on which small board they played 
+	 */
+	public void turnGray(int bigBoardPosition) {
+		/* The "O" shape will be made in Cyan
+		 * and the "X" shape will be made in grey */
+		for (int i = 0; i < 9; i++) {
+			if (bigBoardPosition == 1) {
+					if(oWinner==true){
+						board1.get(i).setBackground(Color.CYAN);
+						board1.get(4).setBackground(Color.WHITE);
+					}
+					else if(xWinner==true){
+						if (i%2 == 0) board1.get(i).setBackground(Color.GRAY);
+						else board1.get(i).setBackground(Color.WHITE);
+					}
+				}
+			if (bigBoardPosition == 2) {
+				if(oWinner==true){
+					board2.get(i).setBackground(Color.CYAN);
+					board2.get(4).setBackground(Color.WHITE);
+				}
+				else if(xWinner==true){
+					if (i%2 == 0) board2.get(i).setBackground(Color.GRAY);
+					else board2.get(i).setBackground(Color.WHITE);
+				}
+				}
+			if (bigBoardPosition == 3) {
+				if(oWinner==true){
+					board3.get(i).setBackground(Color.CYAN);
+					board3.get(4).setBackground(Color.WHITE);
+				}
+				else if(xWinner==true){
+					if (i%2 == 0) board3.get(i).setBackground(Color.GRAY);
+					else board3.get(i).setBackground(Color.WHITE);
+				}
+			}
+			if (bigBoardPosition == 4) {
+				if(oWinner==true){
+					board4.get(i).setBackground(Color.CYAN);
+					board4.get(4).setBackground(Color.WHITE);
+				}
+				else if(xWinner==true){
+					if (i%2 == 0) board4.get(i).setBackground(Color.GRAY);
+					else board4.get(i).setBackground(Color.WHITE);
+				}
+			}
+			if (bigBoardPosition == 5) {
+				if(oWinner==true){
+					board5.get(i).setBackground(Color.CYAN);
+					board5.get(4).setBackground(Color.WHITE);
+				}
+				else if(xWinner==true){
+					if (i%2 == 0) board5.get(i).setBackground(Color.GRAY);
+					else board5.get(i).setBackground(Color.WHITE);
+				}
+			}
+			if (bigBoardPosition == 6) {
+				if(oWinner==true){
+					board6.get(i).setBackground(Color.CYAN);
+					board6.get(4).setBackground(Color.WHITE);
+				}
+				else if(xWinner==true){
+					if (i%2 == 0) board6.get(i).setBackground(Color.GRAY);
+					else board6.get(i).setBackground(Color.WHITE);
+				}
+			}
+			if (bigBoardPosition == 7) {
+				if(oWinner==true){
+					board7.get(i).setBackground(Color.CYAN);
+					board7.get(4).setBackground(Color.WHITE);
+				}
+				else if(xWinner==true){
+					if (i%2 == 0) board7.get(i).setBackground(Color.GRAY);
+					else board7.get(i).setBackground(Color.WHITE);
+				}
+			}
+			if (bigBoardPosition == 8) {
+				if(oWinner==true){
+					board8.get(i).setBackground(Color.CYAN);
+					board8.get(4).setBackground(Color.WHITE);
+				}
+				else if(xWinner==true){
+					if (i%2 == 0) board8.get(i).setBackground(Color.GRAY);
+					else board8.get(i).setBackground(Color.WHITE);
+				}
+			}
+			if (bigBoardPosition == 9) {
+				if(oWinner==true){
+					board9.get(i).setBackground(Color.CYAN);
+					board9.get(4).setBackground(Color.WHITE);
+				}
+				else if(xWinner==true){
+					if (i%2 == 0) board9.get(i).setBackground(Color.GRAY);
+					else board9.get(i).setBackground(Color.WHITE);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Determines who won the overall 9x9 board
+	 * @return true if there is an overall winner
+	 * (i.e., if there are 3 "X" winner boards in a row
+	 * or 3 "O" winner boards in a row)
+	 */
+	public static boolean checkGrandVictory() {
+		boolean checkBig = false;
+		winner = 5;
+			/*checking to see if O won on big board without a tie */
+			if((oSpotsBig.contains(1) && oSpotsBig.contains(2) && oSpotsBig.contains(3)) || (oSpotsBig.contains(7)
+					&& oSpotsBig.contains(8) && oSpotsBig.contains(9)) || 
+					(oSpotsBig.contains(4) && oSpotsBig.contains(5) && oSpotsBig.contains(6)) || 
+					(oSpotsBig.contains(1) && oSpotsBig.contains(5) && oSpotsBig.contains(9)) ||
+					(oSpotsBig.contains(3) && oSpotsBig.contains(5) && oSpotsBig.contains(7)) ||
+					(oSpotsBig.contains(2) && oSpotsBig.contains(5) && oSpotsBig.contains(8)) ||						
+					(oSpotsBig.contains(1) && oSpotsBig.contains(4) && oSpotsBig.contains(7)) || 
+					(oSpotsBig.contains(3) && oSpotsBig.contains(6) && oSpotsBig.contains(9))) {
+				checkBig=true;
+				winner = 1;
+			}
+		
+			/*checking to see if X won on big board without a tie */
+			if((xSpotsBig.contains(1) && xSpotsBig.contains(2) && xSpotsBig.contains(3)) || (xSpotsBig.contains(7)
+				&& xSpotsBig.contains(8) && xSpotsBig.contains(9)) || 
+				(xSpotsBig.contains(4) && xSpotsBig.contains(5) && xSpotsBig.contains(6)) || 
+				(xSpotsBig.contains(1) && xSpotsBig.contains(5) && xSpotsBig.contains(9)) ||
+				(xSpotsBig.contains(3) && xSpotsBig.contains(5) && xSpotsBig.contains(7)) ||
+				(xSpotsBig.contains(2) && xSpotsBig.contains(5) && xSpotsBig.contains(8)) ||
+				(xSpotsBig.contains(1) && xSpotsBig.contains(4) && xSpotsBig.contains(7)) || 
+				(xSpotsBig.contains(3) && xSpotsBig.contains(6) && xSpotsBig.contains(9))) {
+				checkBig=true;
+				winner = 0;
+			}
+			
+			/*checks to see if board is full, therefore if there is a tie */
+			if(xSpotsBig.size() + oSpotsBig.size() == 9){
+				checkBig = true;
+				/* whichever player has more wins will win */
+				/* check this by comparing the arrayLists for O and X */
+				/* field winner is a count to help us determine what to call in checkGrandVictory()*/
+				if(xSpotsBig.size()<oSpotsBig.size()){
+					winner = 3;
+				}
+				if(oSpotsBig.size() < xSpotsBig.size()){
+					winner = 2;
+				}
+			}
+		
+		return checkBig;
+	}
+
+	/**
+	 *The Action that occurs when there is an overall winner
+	 * @param the boolean that signals if there is an overall winner or not
+	 */
+	public static void grandWinAction(boolean checkBig){
+		/* if someone won, make the grandFrame visible */
+		if(checkBig == true) {
+			grandFrame.setVisible(true);
+		}
+		
+		
+		JPanel panel = new JPanel();
+		JLabel label0 = new JLabel("<html><font color=red size=22><center>GAME OVER!<br></center></font></html>");
+		JLabel label1 = new JLabel("");
+		JLabel tie = new JLabel("");
+		JButton button = new JButton();
+		
+		/*if statements determine which player won and whether they won with a tie or not */
+		/* winner is a field that we set in the checkGrandVictory() method */
+		if(winner == 1){
+			label1.setText("<html><font size=22><center>O is the <b>grand winner!<br> You Pick First Next Game!</b></html></font></center>");
+		}
+		if(winner == 0){
+			label1.setText("<html><font size=22><center>X is the <b>grand winner!<br> You Pick First Next Game!</b></html></font></center>");
+		}
+		if(winner == 3){
+			label1.setText("<html><font size=22><center>O is the <b>grand winner!<br> You Pick First Next Game!</b></html></font></center>");
+			tie.setText(grandTieLabel);
+		}
+		if(winner ==2){
+			label1.setText("<html><font size=22><center>X is the <b>grand winner!<br> You Pick First Next Game!</b></html></font></center>");
+			tie.setText(grandTieLabel);
+		}
+		
+		/* button to play another game */
+		button.setIcon(new ImageIcon("playagainbutton.gif"));
+		button.addActionListener(new ActionListener() {
+			@SuppressWarnings("unused")
+			public void actionPerformed(ActionEvent e) {
+				for (int i = 0; i < 81; i++) {
+					buttonArray[i].setIcon(null);
+				}
+				
+				for (int i = 0; i < 9; i++) {
+					board1.get(i).setBackground(mint);
+					board2.get(i).setBackground(Color.WHITE);
+					board3.get(i).setBackground(mint);
+					board4.get(i).setBackground(Color.WHITE);
+					board5.get(i).setBackground(mint);
+					board6.get(i).setBackground(Color.WHITE);
+					board7.get(i).setBackground(mint);
+					board8.get(i).setBackground(Color.WHITE);
+					board9.get(i).setBackground(mint);	
+				}
+				/* brings back to original big board and clears the locations of X and O */
+				showBoard(board1);
+				showBoard(board2);
+				showBoard(board3);
+				showBoard(board4);
+				showBoard(board5);
+				showBoard(board6);
+				showBoard(board7);
+				showBoard(board8);
+				showBoard(board9);
+				frame.setTitle("Tic Tac Toe 9");
+				xSpots.clear();
+				oSpots.clear();
+				xSpotsBig.clear();
+				oSpotsBig.clear();
+				grandFrame.setVisible(false);
+				winningFrame.setVisible(false);
+				tieFrame.setVisible(false);				
+			}
+
+		});
+		panel.add(button);
+		panel.add(label0);
+		panel.add(label1);
+		panel.add(tie);
+		grandFrame.add(panel);
+	}
+
+}
