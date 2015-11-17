@@ -51,6 +51,7 @@ public class TicTacToeBoard extends JFrame {
 	private static int oCount;
 	private static int xCount;
 	private static boolean tie;
+	private String player;
 	ArrayList<ArrayList<JButton>> largeBoard = new ArrayList<ArrayList<JButton>>();
 
 	public static void main(String[] args) {
@@ -109,6 +110,9 @@ public class TicTacToeBoard extends JFrame {
 								new javax.swing.plaf.FontUIResource("Century Gothic", Font.BOLD, 35));
 								xSpots.add(Integer.parseInt(button.getName()));
 								winOrLose(xSpots);
+								if(winOrLose(xSpots)){
+									count = 0;
+								}
 					} else System.out.println("Spot already taken!");
 				} else {
 					boolean check = false;
@@ -126,6 +130,9 @@ public class TicTacToeBoard extends JFrame {
 								new javax.swing.plaf.FontUIResource("Century Gothic", Font.BOLD, 35));
 								oSpots.add(Integer.parseInt(button.getName()));
 								winOrLose(oSpots);
+								if(winOrLose(oSpots)){
+									count = 1;
+								}
 					} else System.out.println("Spot already taken!");
 				}
 			}
@@ -439,7 +446,8 @@ public class TicTacToeBoard extends JFrame {
 	 */
 	public void winAction(ArrayList<Integer> determineWinner,boolean tie) {
 		JPanel panel = new JPanel();
-		JLabel label0 = new JLabel("<html><font size=10><center>Congratulations!<br>");
+		JLabel label0 = new JLabel("<html><font size=10><center>Congratulations!<br>Player O Score: " + oCount
+				+ "<br> Player X Score:" + xCount + "</html></font></center>");
 		JButton button = new JButton("Play Another Board!");
 		button.addActionListener(new ActionListener(){
 			@Override
@@ -678,9 +686,10 @@ public class TicTacToeBoard extends JFrame {
 					(oSpotsBig.contains(3) && oSpotsBig.contains(5) && oSpotsBig.contains(7)) ||
 					(oSpotsBig.contains(2) && oSpotsBig.contains(5) && oSpotsBig.contains(8)) ||						
 					(oSpotsBig.contains(1) && oSpotsBig.contains(4) && oSpotsBig.contains(7)) || 
-					(oSpotsBig.contains(3) && oSpotsBig.contains(6) && oSpotsBig.contains(9))||
-					oSpotsBig.size()==5) {
+					(oSpotsBig.contains(3) && oSpotsBig.contains(6) && oSpotsBig.contains(9))) {
 				checkBig=true;
+			}else if(oSpotsBig.size() == 4 && xSpotsBig.size() == 5 ){
+				checkBig = true;
 			}
 		}
 		else if(whoWon.equals(xSpotsBig)) {
@@ -691,9 +700,10 @@ public class TicTacToeBoard extends JFrame {
 				(xSpotsBig.contains(3) && xSpotsBig.contains(5) && xSpotsBig.contains(7)) ||
 				(xSpotsBig.contains(2) && xSpotsBig.contains(5) && xSpotsBig.contains(8)) ||
 				(xSpotsBig.contains(1) && xSpotsBig.contains(4) && xSpotsBig.contains(7)) || 
-				(xSpotsBig.contains(3) && xSpotsBig.contains(6) && xSpotsBig.contains(9)) || 
-				xSpotsBig.size()==5) {
+				(xSpotsBig.contains(3) && xSpotsBig.contains(6) && xSpotsBig.contains(9))) {
 				checkBig=true;
+			}else if(xSpotsBig.size() == 4 && oSpotsBig.size() == 5){
+				checkBig  = true;
 			}
 		}
 		grandWinAction(checkBig);
