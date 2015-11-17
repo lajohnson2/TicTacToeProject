@@ -73,6 +73,11 @@ public class TicTacToeBoard extends JFrame {
 		grandFrame.setResizable(false);
 		grandFrame.setVisible(false);
 		grandFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		tieFrame = new JFrame("There was a Tie!");
+		tieFrame.setSize(350,250);
+		tieFrame.setResizable(false);
+		tieFrame.setVisible(false);
+		winningFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		
 		/* Sets up the game */
 		frame = new JFrame("Which Board? " + this.player1 + " Picks");
@@ -103,7 +108,7 @@ public class TicTacToeBoard extends JFrame {
 						UIManager.put("Button.font",
 								new javax.swing.plaf.FontUIResource("Century Gothic", Font.BOLD, 35));
 								xSpots.add(Integer.parseInt(button.getName()));
-						System.out.println(winOrLose(xSpots));
+								winOrLose(xSpots);
 					} else System.out.println("Spot already taken!");
 				} else {
 					boolean check = false;
@@ -120,7 +125,7 @@ public class TicTacToeBoard extends JFrame {
 						UIManager.put("Button.font",
 								new javax.swing.plaf.FontUIResource("Century Gothic", Font.BOLD, 35));
 								oSpots.add(Integer.parseInt(button.getName()));
-						System.out.println(winOrLose(oSpots));
+								winOrLose(oSpots);
 					} else System.out.println("Spot already taken!");
 				}
 			}
@@ -394,35 +399,35 @@ public class TicTacToeBoard extends JFrame {
 	public boolean winOrLose(ArrayList<Integer> locations) {
 		boolean result = false;
 		if (locations.contains(0) && locations.contains(1) && locations.contains(2)) {
-			result = true;
-			winAction(locations);
+			
+			winAction(locations,false);
 		} else if (locations.contains(3) && locations.contains(4) && locations.contains(5)) {
-			result = true;
-			winAction(locations);
+			
+			winAction(locations,false);
 		} else if (locations.contains(6) && locations.contains(7) && locations.contains(8)) {
-			result = true;
-			winAction(locations);
+			
+			winAction(locations,false);
 		} else if (locations.contains(0) && locations.contains(3) && locations.contains(6)) {
-			result = true;
-			winAction(locations);
+			
+			winAction(locations,false);
 		} else if (locations.contains(1) && locations.contains(4) && locations.contains(7)) {
-			result = true;
-			winAction(locations);
+			
+			winAction(locations,false);
 		} else if (locations.contains(2) && locations.contains(5) && locations.contains(8)) {
-			result = true;
-			winAction(locations);
+			
+			winAction(locations,false);
 		} else if (locations.contains(0) && locations.contains(4) && locations.contains(8)) {
-			result = true;
-			winAction(locations);
+			
+			winAction(locations,false);
 		} else if (locations.contains(6) && locations.contains(4) && locations.contains(2)) {
-			result = true;
-			winAction(locations);
+			
+			winAction(locations,false);
 		} else  if(locations.contains(0) && locations.contains(4) &&locations.contains(8)){
-			result = true;
-			winAction(locations);
+			
+			winAction(locations,false);
 		} else if(locations.size() == 5) {
-			result = true;
-			winAction(locations);
+			
+			winAction(locations,true);
 		}
 		return result;
 	}
@@ -432,29 +437,9 @@ public class TicTacToeBoard extends JFrame {
 	 * This method handles what happens when there is a winner
 	 * @param determineWinner
 	 */
-	public void winAction(ArrayList<Integer> determineWinner) {
-		if(determineWinner.equals(oSpots)){
-			oWinner=true;
-			xWinner=false;
-			winningFrame.setTitle("O is the winner!");
-			winningFrame.setVisible(true);
-			oCount++;
-			turnGray(bigBoardPosition);
-			oSpotsBig.add(bigBoardPosition);
-			
-		}
-		else{
-			xWinner=true;
-			oWinner=false;
-			winningFrame.setTitle("X is the winner!");
-			winningFrame.setVisible(true);
-			xCount++;
-			turnGray(bigBoardPosition);
-			xSpotsBig.add(bigBoardPosition);
-		}
+	public void winAction(ArrayList<Integer> determineWinner,boolean tie) {
 		JPanel panel = new JPanel();
-		JLabel label0 = new JLabel("<html><font size=10><center>Congratulations!<br>Player O Score: " + oCount
-				+ "<br> Player X Score:" + xCount + "</html></font></center>");
+		JLabel label0 = new JLabel("<html><font size=10><center>Congratulations!<br>");
 		JButton button = new JButton("Play Another Board!");
 		button.addActionListener(new ActionListener(){
 			@Override
@@ -474,11 +459,101 @@ public class TicTacToeBoard extends JFrame {
 				xSpots.clear();
 				oSpots.clear();
 				winningFrame.setVisible(false);
+				tieFrame.setVisible(false);
 				dispose();
 			}	
 		});
+		if(determineWinner.equals(oSpots) && tie == false){
+			oWinner=true;
+			xWinner=false;
+			winningFrame.setTitle("O is the winner!");
+			winningFrame.setVisible(true);
+			oCount++;
+			turnGray(bigBoardPosition);
+			oSpotsBig.add(bigBoardPosition);
+			
+		}
+		else if(determineWinner.equals(xSpots)&& tie == false){
+			xWinner=true;
+			oWinner=false;
+			winningFrame.setTitle("X is the winner!");
+			winningFrame.setVisible(true);
+			xCount++;
+			turnGray(bigBoardPosition);
+			xSpotsBig.add(bigBoardPosition);
+		} else if(tie == true){
+			for (int i = 0; i < 9; i++) {
+				if (bigBoardPosition == 1) {
+						board1.get(i).setBackground(Color.CYAN);
+						board1.get(3).setBackground(Color.WHITE);
+						board1.get(5).setBackground(Color.WHITE);
+						board1.get(6).setBackground(Color.WHITE);
+						board1.get(8).setBackground(Color.WHITE);
+					}
+				if (bigBoardPosition == 2) {
+					board2.get(i).setBackground(Color.CYAN);
+					board2.get(3).setBackground(Color.WHITE);
+					board2.get(5).setBackground(Color.WHITE);
+					board2.get(6).setBackground(Color.WHITE);
+					board2.get(8).setBackground(Color.WHITE);
+				}
+				if (bigBoardPosition == 3) {
+					board3.get(i).setBackground(Color.CYAN);
+					board3.get(3).setBackground(Color.WHITE);
+					board3.get(5).setBackground(Color.WHITE);
+					board3.get(6).setBackground(Color.WHITE);
+					board3.get(8).setBackground(Color.WHITE);
+				}
+				if (bigBoardPosition == 4) {
+					board4.get(i).setBackground(Color.CYAN);
+					board4.get(3).setBackground(Color.WHITE);
+					board4.get(5).setBackground(Color.WHITE);
+					board4.get(6).setBackground(Color.WHITE);
+					board4.get(8).setBackground(Color.WHITE);
+				}
+				if (bigBoardPosition == 5) {
+					board5.get(i).setBackground(Color.CYAN);
+					board5.get(3).setBackground(Color.WHITE);
+					board5.get(5).setBackground(Color.WHITE);
+					board5.get(6).setBackground(Color.WHITE);
+					board5.get(8).setBackground(Color.WHITE);
+				}
+				if (bigBoardPosition == 6) {
+					board6.get(i).setBackground(Color.CYAN);
+					board6.get(3).setBackground(Color.WHITE);
+					board6.get(5).setBackground(Color.WHITE);
+					board6.get(6).setBackground(Color.WHITE);
+					board6.get(8).setBackground(Color.WHITE);
+				}
+				if (bigBoardPosition == 7) {
+					board7.get(i).setBackground(Color.CYAN);
+					board7.get(3).setBackground(Color.WHITE);
+					board7.get(5).setBackground(Color.WHITE);
+					board7.get(6).setBackground(Color.WHITE);
+					board7.get(8).setBackground(Color.WHITE);
+				}
+				if (bigBoardPosition == 8) {
+					board8.get(i).setBackground(Color.CYAN);
+					board8.get(3).setBackground(Color.WHITE);
+					board8.get(5).setBackground(Color.WHITE);
+					board8.get(6).setBackground(Color.WHITE);
+					board8.get(8).setBackground(Color.WHITE);
+				}
+				if (bigBoardPosition == 9) {
+					board9.get(i).setBackground(Color.CYAN);
+					board9.get(3).setBackground(Color.WHITE);
+					board9.get(5).setBackground(Color.WHITE);
+					board9.get(6).setBackground(Color.WHITE);
+					board9.get(8).setBackground(Color.WHITE);
+				}
+				
+				tieFrame.setTitle("There was a Tie!");
+				tieFrame.setVisible(true);
+		}}
+		
 		panel.add(label0);
 		panel.add(button);
+		tieFrame.add(panel);
 		winningFrame.add(panel);
 		boolean Xwin = checkGrandVictory(xSpotsBig);
 		boolean Owin = checkGrandVictory(oSpotsBig);
@@ -673,6 +748,7 @@ public class TicTacToeBoard extends JFrame {
 		}
 		panel.add(label0);
 		tieFrame.add(panel);
+		
 	}
 
 	public static void grandWinAction(boolean didSomeoneWin){
@@ -682,16 +758,16 @@ public class TicTacToeBoard extends JFrame {
 		}
 		JPanel panel = new JPanel();
 		JLabel label0 = new JLabel("<html><font color=red size=22><center>GAME OVER!<br></center></font></html>");
-		JLabel label1;
+		JLabel label1 = new JLabel("");
 		JButton button;
 		if(oCount>xCount){
-			label1= new JLabel("<html><font size=22><center>O is the <b>grand winner!</b></html></font></center>");
+			label1.setText("<html><font size=22><center>O is the <b>grand winner!</b></html></font></center>");
 		}
 		if(xCount>oCount){
-			label1= new JLabel("<html><font size=22><center>X is the <b>grand winner!</b></html></font></center>");
+			label1.setText("<html><font size=22><center>X is the <b>grand winner!</b></html></font></center>");
 		}
 		if(xCount==oCount){
-			label1  = new JLabel("<html><font size=22><center>It's a tie!<br>Play a final match!</html></font></center>");
+			label1.setText("<html><font size=22><center>It's a tie!<br>Play a final match!</html></font></center>");
 		}
 		if(oCount>xCount || oCount<xCount) button = new JButton("Play Again!");
 		else {
@@ -718,6 +794,11 @@ public class TicTacToeBoard extends JFrame {
 			}
 
 		});
+		panel.add(button);
+		panel.add(label0);
+		panel.add(label1);
+		grandFrame.add(panel);
 	}
 
 }
+
