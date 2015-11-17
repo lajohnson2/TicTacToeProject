@@ -834,7 +834,21 @@ public class TicTacToeBoard extends JFrame {
 		button.addActionListener(new ActionListener() {
 			@SuppressWarnings("unused")
 			public void actionPerformed(ActionEvent e) {
-				for (int i = 0; i < 81; i++) buttonArray[i].setText(" ");
+				for (int i = 0; i < 81; i++) {
+					buttonArray[i].setText(" ");
+				}
+				
+				for (int i = 0; i < 9; i++) {
+					board1.get(i).setBackground(Color.GREEN);
+					board2.get(i).setBackground(Color.WHITE);
+					board3.get(i).setBackground(Color.GREEN);
+					board4.get(i).setBackground(Color.WHITE);
+					board5.get(i).setBackground(Color.GREEN);
+					board6.get(i).setBackground(Color.WHITE);
+					board7.get(i).setBackground(Color.GREEN);
+					board8.get(i).setBackground(Color.WHITE);
+					board9.get(i).setBackground(Color.GREEN);	
+				}
 				/* brings back to original big board and clears the locations of X and O */
 				showBoard(board1);
 				showBoard(board2);
@@ -848,6 +862,11 @@ public class TicTacToeBoard extends JFrame {
 				frame.setTitle("Which Board?: " + player1 + " Picks");
 				xSpots.clear();
 				oSpots.clear();
+				xSpotsBig.clear();
+				oSpotsBig.clear();
+				grandFrame.setVisible(false);
+				winningFrame.setVisible(false);
+				tieFrame.setVisible(false);				
 			}
 
 		});
