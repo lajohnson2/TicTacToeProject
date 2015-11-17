@@ -1,0 +1,1044 @@
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.*;
+//how to increment properly
+//how to make button not switch after first click
+//resize restart and exit buttons
+//change font size in buttons
+public class Board extends JFrame {
+
+	private static boolean oWinner;
+	private static boolean xWinner;
+	private static JFrame frame;
+	private static JFrame tieFrame;
+	private static JFrame grandFrame;
+	private static JFrame winningFrame;
+	private static JButton buttonArray[] = new JButton[81];
+	private byte count = 0;
+	private static ActionListener setXO;
+	private static String player1;
+	private String player2;
+	private static int bigBoardPosition;
+	public static int oCount;
+	public static int xCount;
+	private static boolean tie;
+	private static JFrame hOrC; //Create beginning frame requesting whether player wants to play against someone else or the computer
+
+	private static ArrayList<JButton> board1 = new ArrayList<JButton>();
+	private static ArrayList<JButton> board2 = new ArrayList<JButton>();
+	private static ArrayList<JButton> board3 = new ArrayList<JButton>();
+	private static ArrayList<JButton> board4 = new ArrayList<JButton>();
+	private static ArrayList<JButton> board5 = new ArrayList<JButton>();
+	private static ArrayList<JButton> board6 = new ArrayList<JButton>();
+	private static ArrayList<JButton> board7 = new ArrayList<JButton>();
+	private static ArrayList<JButton> board8 = new ArrayList<JButton>();
+	private static ArrayList<JButton> board9 = new ArrayList<JButton>();
+	private static ArrayList<Integer> oSpots = new ArrayList<Integer>();
+	private static ArrayList<Integer> xSpots = new ArrayList<Integer>();
+	private static ArrayList<Integer> oSpotsBig = new ArrayList<Integer>();
+	private static ArrayList<Integer> xSpotsBig = new ArrayList<Integer>();
+	ArrayList<ArrayList<JButton>> largeBoard = new ArrayList<ArrayList<JButton>>();
+
+	public static void main(String[] args) {
+		new Board();
+
+	}
+
+	public Board() {
+		player1 = "X";
+		player2 = "O";
+		oCount = 0;
+		xCount = 0;
+		winningFrame = new JFrame("O is the winner!");
+		winningFrame.setSize(350, 250);
+		winningFrame.setResizable(false);
+		winningFrame.setVisible(false);
+		winningFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		grandFrame = new JFrame("Grand Victory!");
+		grandFrame.setSize(500, 210);
+		grandFrame.setResizable(false);
+		grandFrame.setVisible(false);
+		grandFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frame = new JFrame("Which Board? " + this.player1 + " Picks");
+		frame.setSize(600, 600);
+		frame.setResizable(false);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		frame.setLayout(new GridLayout(10, 9));
+
+		setXO = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				JButton button = (JButton) event.getSource();
+				if (count % 2 == 0) {
+					player1 = "X";
+					player2 = "O";
+					boolean check = false;
+					for (int i = 0; i < oSpots.size(); i++) {
+						for (int j = 0; j < xSpots.size(); j++) {
+							int convertbutton = Integer.parseInt(button
+									.getName());
+							if (oSpots.get(i) == convertbutton
+									|| xSpots.get(j) == convertbutton) {
+								check = true;
+							}
+						}
+					}
+					if (!check) {
+						count++;
+						button.setText("X");
+						UIManager.put("Button.font",
+								new javax.swing.plaf.FontUIResource(
+										"Times New Roman", Font.BOLD, 35));
+						xSpots.add(Integer.parseInt(button.getName()));
+						winOrLose(xSpots);
+						System.out.println(winOrLose(xSpots));
+
+					} else {
+						System.out.println("Spot already taken!");
+					}
+
+				} else {
+					boolean check = false;
+					for (int i = 0; i < xSpots.size(); i++) {
+						for (int j = 0; j < oSpots.size(); j++) {
+							int convertbutton = Integer.parseInt(button
+									.getName());
+							if (xSpots.get(i) == convertbutton
+									|| oSpots.get(j) == convertbutton) {
+								check = true;
+							}
+						}
+					}
+					if (!check) {
+						count++;
+						button.setText("O");
+						UIManager.put("Button.font",
+								new javax.swing.plaf.FontUIResource(
+										"Times New Roman", Font.BOLD, 35));
+
+						oSpots.add(Integer.parseInt(button.getName()));
+						winOrLose(oSpots);
+						System.out.println(winOrLose(oSpots));
+					} else {
+						System.out.println("Spot already taken!");
+					}
+
+				}
+
+			}
+		};
+
+		for (int i = 0; i < 81; i++) {
+			buttonArray[i] = new JButton();
+			final int buttonNumber = i;
+
+			buttonArray[buttonNumber].addActionListener(setXO);
+
+			if (i <= 2 || (i <= 11 && i >= 9) || (i <= 20 && i >= 18)) {
+				buttonArray[i].setBackground(Color.GREEN);
+				buttonArray[i].setOpaque(true);
+				board1.add(buttonArray[i]);
+				String name = String.valueOf(board1.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber]
+						.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								bigBoardPosition=1;
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 1");
+							}
+
+						});
+
+			} else if ((i >= 3 && i <= 5) || (i >= 12 && i <= 14)
+					|| (i >= 21 && i <= 23)) {
+				buttonArray[i].setBackground(Color.WHITE);
+				buttonArray[i].setOpaque(true);
+				board2.add(buttonArray[i]);
+				String name = String.valueOf(board2.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber]
+						.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								bigBoardPosition=2;
+								hideBoard(board1);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 2");
+							}
+
+						});
+			} else if ((i >= 6 && i <= 8) || (i >= 15 && i <= 17)
+					|| (i >= 24 && i <= 26)) {
+				buttonArray[i].setBackground(Color.GREEN);
+				buttonArray[i].setOpaque(true);
+				board3.add(buttonArray[i]);
+				String name = String.valueOf(board3.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber]
+						.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								bigBoardPosition=3;
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 3");
+							}
+
+						});
+			} else if ((i >= 27 && i <= 29) || (i >= 36 && i <= 38)
+					|| (i >= 45 && i <= 47)) {
+				buttonArray[i].setBackground(Color.WHITE);
+				buttonArray[i].setOpaque(true);
+				board4.add(buttonArray[i]);
+				String name = String.valueOf(board4.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber]
+						.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								bigBoardPosition=4;
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 4");
+							}
+
+						});
+			} else if ((i >= 30 && i <= 32) || (i >= 39 && i <= 41)
+					|| (i >= 48 && i <= 50)) {
+				buttonArray[i].setBackground(Color.GREEN);
+				buttonArray[i].setOpaque(true);
+				board5.add(buttonArray[i]);
+				String name = String.valueOf(board5.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber]
+						.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								bigBoardPosition=5;
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 5");
+							}
+
+						});
+			} else if ((i >= 33 && i <= 35) || (i >= 42 && i <= 44)
+					|| (i >= 51 && i <= 53)) {
+				buttonArray[i].setBackground(Color.WHITE);
+				board6.add(buttonArray[i]);
+				String name = String.valueOf(board6.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber]
+						.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								bigBoardPosition=6;
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board7);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 6");
+							}
+
+						});
+			} else if ((i >= 54 && i <= 56) || (i >= 63 && i <= 65)
+					|| (i >= 72 && i <= 74)) {
+				buttonArray[i].setBackground(Color.GREEN);
+				buttonArray[i].setOpaque(true);
+				board7.add(buttonArray[i]);
+				String name = String.valueOf(board7.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber]
+						.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								bigBoardPosition=7;
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board8);
+								hideBoard(board9);
+								frame.setTitle("Board 7");
+							}
+
+						});
+			} else if ((i >= 57 && i <= 59) || (i >= 66 && i <= 68)
+					|| (i >= 75 && i <= 77)) {
+				buttonArray[i].setBackground(Color.WHITE);
+				buttonArray[i].setOpaque(true);
+				board8.add(buttonArray[i]);
+				String name = String.valueOf(board8.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber]
+						.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								bigBoardPosition=8;
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board9);
+								frame.setTitle("Board 8");
+							}
+
+						});
+			} else {
+				buttonArray[i].setBackground(Color.GREEN);
+				buttonArray[i].setOpaque(true);
+				board9.add(buttonArray[i]);
+				String name = String.valueOf(board9.indexOf(buttonArray[i]));
+				buttonArray[i].setName(name);
+				buttonArray[buttonNumber]
+						.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								bigBoardPosition=9;
+								hideBoard(board1);
+								hideBoard(board2);
+								hideBoard(board3);
+								hideBoard(board4);
+								hideBoard(board5);
+								hideBoard(board6);
+								hideBoard(board7);
+								hideBoard(board8);
+								frame.setTitle("Board 9");
+							}
+
+						});
+			}
+
+			// making an array list with all of the small boards to be used to
+			// possibly find the overall winner
+			largeBoard.add(board1);
+			largeBoard.add(board2);
+			largeBoard.add(board3);
+			largeBoard.add(board4);
+			largeBoard.add(board5);
+			largeBoard.add(board6);
+			largeBoard.add(board6);
+			largeBoard.add(board7);
+			largeBoard.add(board8);
+			largeBoard.add(board9);
+
+			frame.add(buttonArray[i]);
+			buttonArray[i].setVisible(true);
+
+		}
+
+		JButton restart = new JButton("Restart");// creating instance of
+		// JButton, restart button
+		restart.setBounds(130, 100, 100, 40);// x axis, y axis, width, height
+
+		JButton exit = new JButton("Exit");// creating instance of JButton
+		// exit.setBounds(30,100,100,40);//x axis, y axis, width, height
+		exit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				System.exit(0);
+			}
+		});
+		restart.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				for (int i = 0; i < 81; i++) {
+					buttonArray[i].setText(" ");
+				}
+				// brings back to original big board and clears the locations of
+				// x and o
+				RevertColor();
+				showBoard(board1);
+				showBoard(board2);
+				showBoard(board3);
+				showBoard(board4);
+				showBoard(board5);
+				showBoard(board6);
+				showBoard(board7);
+				showBoard(board8);
+				showBoard(board9);
+				frame.setTitle("Which Board?: " + player1 + " Picks");
+				xSpots.clear();
+				oSpots.clear();
+
+
+
+			}
+		});
+		frame.add(restart);
+		restart.setBounds(100, 550, 10, 40);// x axis, y axis, width, height
+		frame.add(exit);
+		// exit.setBounds(100,520,100,40);//x axis, y axis, width, height
+
+		// make sure the JFrame is visible
+		frame.setVisible(true); // the JFrame is set to visible
+	}
+
+	// method to hide boards
+	public static void hideBoard(ArrayList<JButton> board) {
+		for (int i = 0; i < 9; i++) {
+			board.get(i).setVisible(false);
+		}
+	}
+
+	// method to expose board
+	public static void showBoard(ArrayList<JButton> board) {
+		for (int i = 0; i < 9; i++) {
+			board.get(i).setVisible(true);
+		}
+	}
+	// tests the arrayList of a board to see if it has a combination of winning
+	// locations
+	public boolean winOrLose(ArrayList<Integer> locations) {
+		boolean result = false;
+		if (locations.contains(0) && locations.contains(1) && locations.contains(2)) {
+			result = true;
+			winAction(locations,false);
+			checkGrandVictory(locations);
+		} else if (locations.contains(3) && locations.contains(4) && locations.contains(5)) {
+
+			result = true;
+			winAction(locations,false);
+			checkGrandVictory(locations);
+		} else if (locations.contains(6) && locations.contains(7) && locations.contains(8)) {
+
+			result = true;
+			winAction(locations,false);
+			checkGrandVictory(locations);
+		} else if (locations.contains(0) && locations.contains(3) && locations.contains(6)) {
+
+			result = true;
+			winAction(locations,false);
+			checkGrandVictory(locations);
+		} else if (locations.contains(1) && locations.contains(4) && locations.contains(7)) {
+
+			result = true;
+			winAction(locations,false);
+			checkGrandVictory(locations);
+		} else if (locations.contains(2) && locations.contains(5) && locations.contains(8)) {
+
+			result = true;
+			checkGrandVictory(locations);
+			winAction(locations,false);
+		} else if (locations.contains(0) && locations.contains(4) && locations.contains(8)) {
+			checkGrandVictory(locations);	
+			result = true;
+			winAction(locations,false);
+		} else if (locations.contains(6) && locations.contains(4) && locations.contains(2)) {
+			checkGrandVictory(locations);
+			result = true;
+			winAction(locations,false);
+		} else  if(locations.contains(0) && locations.contains(4) &&locations.contains(8)){			
+			result = true;
+			winAction(locations,false);
+			checkGrandVictory(locations);
+		} else if(locations.size() == 5) {
+			checkGrandVictory(locations);
+			winAction(locations,true);
+		}
+		return result;
+	}
+	//	public static void close(JFrame a){
+	//		System.exit(0);
+	//	}
+	// implement a way to set the small board to a big x or a big o
+	public void winAction(ArrayList<Integer> determineWinner, boolean tie) {
+		JPanel panel = new JPanel();
+		JPanel panelTie = new JPanel(); //created another panel for the tie
+		JLabel label0 = new JLabel("<html><font size=10><center>Congratulations!<br>Player O Score: " + oCount
+				+ "<br> Player X Score:" + xCount + "</html></font></center>");
+		JButton button = new JButton("Play Another Board!");
+		button.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (int i = 0; i < 81; i++) buttonArray[i].setText(" ");
+				/* brings back to original big board and clears the locations of X and O */
+				showBoard(board1);
+				showBoard(board2);
+				showBoard(board3);
+				showBoard(board4);
+				showBoard(board5);
+				showBoard(board6);
+				showBoard(board7);
+				showBoard(board8);
+				showBoard(board9);
+				frame.setTitle("Which Board?: " + player1 + " Picks");
+				xSpots.clear();
+				oSpots.clear();
+				winningFrame.setVisible(false);
+				tieFrame.setVisible(false);
+				dispose();
+			}	
+		});
+		JButton buttonTie = new JButton("Play Another Board!");
+		buttonTie.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (int i = 0; i < 81; i++) buttonArray[i].setText(" ");
+				/* brings back to original big board and clears the locations of X and O */
+				showBoard(board1);
+				showBoard(board2);
+				showBoard(board3);
+				showBoard(board4);
+				showBoard(board5);
+				showBoard(board6);
+				showBoard(board7);
+				showBoard(board8);
+				showBoard(board9);
+				frame.setTitle("Which Board?: " + player1 + " Picks");
+				xSpots.clear();
+				oSpots.clear();
+				winningFrame.setVisible(false);
+				tieFrame.setVisible(false);
+				dispose();
+			}	
+		});
+		if(determineWinner.equals(oSpots) && tie == false){
+			oWinner=true;
+			xWinner=false;
+			oCount++;
+			winningFrame.setTitle("O is the winner!");
+			turnGray(bigBoardPosition);
+			oSpotsBig.add(bigBoardPosition);
+			panel.add(label0);
+			panel.add(button);
+			winningFrame.add(panel);
+			if(checkGrandVictory(oSpotsBig)==false){
+			winningFrame.setVisible(true);
+			}
+		}
+		else if(determineWinner.equals(xSpots)&& tie == false){
+			xWinner=true;
+			oWinner=false;
+			xCount++;
+			winningFrame.setTitle("X is the winner!");
+			turnGray(bigBoardPosition);
+			xSpotsBig.add(bigBoardPosition);
+			checkGrandVictory(xSpotsBig);
+			panel.add(label0);
+			panel.add(button);
+			winningFrame.add(panel);
+			if(checkGrandVictory(xSpotsBig)==false){
+			winningFrame.setVisible(true);
+			}
+		} else if(tie == true){
+			for (int i = 0; i < 9; i++) {
+				if (bigBoardPosition == 1) {
+					board1.get(i).setBackground(Color.CYAN);
+					board1.get(3).setBackground(Color.WHITE);
+					board1.get(5).setBackground(Color.WHITE);
+					board1.get(6).setBackground(Color.WHITE);
+					board1.get(8).setBackground(Color.WHITE);
+				}
+				if (bigBoardPosition == 2) {
+					board2.get(i).setBackground(Color.CYAN);
+					board2.get(3).setBackground(Color.WHITE);
+					board2.get(5).setBackground(Color.WHITE);
+					board2.get(6).setBackground(Color.WHITE);
+					board2.get(8).setBackground(Color.WHITE);
+				}
+				if (bigBoardPosition == 3) {
+					board3.get(i).setBackground(Color.CYAN);
+					board3.get(3).setBackground(Color.WHITE);
+					board3.get(5).setBackground(Color.WHITE);
+					board3.get(6).setBackground(Color.WHITE);
+					board3.get(8).setBackground(Color.WHITE);
+				}
+				if (bigBoardPosition == 4) {
+					board4.get(i).setBackground(Color.CYAN);
+					board4.get(3).setBackground(Color.WHITE);
+					board4.get(5).setBackground(Color.WHITE);
+					board4.get(6).setBackground(Color.WHITE);
+					board4.get(8).setBackground(Color.WHITE);
+				}
+				if (bigBoardPosition == 5) {
+					board5.get(i).setBackground(Color.CYAN);
+					board5.get(3).setBackground(Color.WHITE);
+					board5.get(5).setBackground(Color.WHITE);
+					board5.get(6).setBackground(Color.WHITE);
+					board5.get(8).setBackground(Color.WHITE);
+				}
+				if (bigBoardPosition == 6) {
+					board6.get(i).setBackground(Color.CYAN);
+					board6.get(3).setBackground(Color.WHITE);
+					board6.get(5).setBackground(Color.WHITE);
+					board6.get(6).setBackground(Color.WHITE);
+					board6.get(8).setBackground(Color.WHITE);
+				}
+				if (bigBoardPosition == 7) {
+					board7.get(i).setBackground(Color.CYAN);
+					board7.get(3).setBackground(Color.WHITE);
+					board7.get(5).setBackground(Color.WHITE);
+					board7.get(6).setBackground(Color.WHITE);
+					board7.get(8).setBackground(Color.WHITE);
+				}
+				if (bigBoardPosition == 8) {
+					board8.get(i).setBackground(Color.CYAN);
+					board8.get(3).setBackground(Color.WHITE);
+					board8.get(5).setBackground(Color.WHITE);
+					board8.get(6).setBackground(Color.WHITE);
+					board8.get(8).setBackground(Color.WHITE);
+				}
+				if (bigBoardPosition == 9) {
+					board9.get(i).setBackground(Color.CYAN);
+					board9.get(3).setBackground(Color.WHITE);
+					board9.get(5).setBackground(Color.WHITE);
+					board9.get(6).setBackground(Color.WHITE);
+					board9.get(8).setBackground(Color.WHITE);
+				}
+				tieFrame.setTitle("There was a Tie!");
+				tieFrame.setVisible(true);
+			}}
+
+		panel.add(label0);
+		panel.add(button);
+		panelTie.add(buttonTie);
+		tieFrame.add(panelTie);
+		winningFrame.add(panel);
+		boolean Xwin = checkGrandVictory(xSpotsBig);
+		boolean Owin = checkGrandVictory(oSpotsBig);
+		grandWinAction(Xwin);
+		grandWinAction(Owin);
+	}
+
+	public void turnGray(int bigBoardPosition) {
+		for (int i = 0; i < 81; i++) {
+			if (bigBoardPosition == 1) {
+				if(oWinner==true){
+					buttonArray[0].setBackground(Color.GREEN);
+					buttonArray[1].setBackground(Color.GREEN);
+					buttonArray[2].setBackground(Color.GREEN);
+					buttonArray[9].setBackground(Color.GREEN);
+					buttonArray[10].setBackground(Color.WHITE);
+					buttonArray[11].setBackground(Color.GREEN);
+					buttonArray[18].setBackground(Color.GREEN);
+					buttonArray[19].setBackground(Color.GREEN);
+					buttonArray[20].setBackground(Color.GREEN);
+				}
+				else if(xWinner==true){
+					buttonArray[0].setBackground(Color.GREEN);
+					buttonArray[1].setBackground(Color.WHITE);
+					buttonArray[2].setBackground(Color.GREEN);
+					buttonArray[9].setBackground(Color.WHITE);
+					buttonArray[10].setBackground(Color.GREEN);
+					buttonArray[11].setBackground(Color.WHITE);
+					buttonArray[18].setBackground(Color.GREEN);
+					buttonArray[19].setBackground(Color.WHITE);
+					buttonArray[20].setBackground(Color.GREEN);
+				}
+			}
+			if (bigBoardPosition == 2) {
+				if(oWinner==true){
+					buttonArray[3].setBackground(Color.GREEN);
+					buttonArray[4].setBackground(Color.GREEN);
+					buttonArray[5].setBackground(Color.GREEN);
+					buttonArray[12].setBackground(Color.GREEN);
+					buttonArray[13].setBackground(Color.WHITE);
+					buttonArray[14].setBackground(Color.GREEN);
+					buttonArray[21].setBackground(Color.GREEN);
+					buttonArray[22].setBackground(Color.GREEN);
+					buttonArray[23].setBackground(Color.GREEN);
+				}
+				else if(xWinner==true){
+					buttonArray[3].setBackground(Color.GREEN);
+					buttonArray[4].setBackground(Color.WHITE);
+					buttonArray[5].setBackground(Color.GREEN);
+					buttonArray[12].setBackground(Color.WHITE);
+					buttonArray[13].setBackground(Color.GREEN);
+					buttonArray[14].setBackground(Color.WHITE);
+					buttonArray[21].setBackground(Color.GREEN);
+					buttonArray[22].setBackground(Color.WHITE);
+					buttonArray[23].setBackground(Color.GREEN);
+				}
+			}
+			if (bigBoardPosition == 3) {
+				if(oWinner==true){
+					buttonArray[6].setBackground(Color.GREEN);
+					buttonArray[7].setBackground(Color.GREEN);
+					buttonArray[8].setBackground(Color.GREEN);
+					buttonArray[15].setBackground(Color.GREEN);
+					buttonArray[16].setBackground(Color.WHITE);
+					buttonArray[17].setBackground(Color.GREEN);
+					buttonArray[24].setBackground(Color.GREEN);
+					buttonArray[25].setBackground(Color.GREEN);
+					buttonArray[26].setBackground(Color.GREEN);
+				}
+				else if(xWinner==true){
+					buttonArray[6].setBackground(Color.GREEN);
+					buttonArray[7].setBackground(Color.WHITE);
+					buttonArray[8].setBackground(Color.GREEN);
+					buttonArray[15].setBackground(Color.WHITE);
+					buttonArray[16].setBackground(Color.GREEN);
+					buttonArray[17].setBackground(Color.WHITE);
+					buttonArray[24].setBackground(Color.GREEN);
+					buttonArray[25].setBackground(Color.WHITE);
+					buttonArray[26].setBackground(Color.GREEN);
+				}
+			}
+			if (bigBoardPosition == 4) {
+				if(oWinner==true){
+					buttonArray[27].setBackground(Color.GREEN);
+					buttonArray[28].setBackground(Color.GREEN);
+					buttonArray[29].setBackground(Color.GREEN);
+					buttonArray[36].setBackground(Color.GREEN);
+					buttonArray[37].setBackground(Color.WHITE);
+					buttonArray[38].setBackground(Color.GREEN);
+					buttonArray[45].setBackground(Color.GREEN);
+					buttonArray[46].setBackground(Color.GREEN);
+					buttonArray[47].setBackground(Color.GREEN);
+				}
+				else if(xWinner==true){
+					buttonArray[27].setBackground(Color.GREEN);
+					buttonArray[28].setBackground(Color.WHITE);
+					buttonArray[29].setBackground(Color.GREEN);
+					buttonArray[36].setBackground(Color.WHITE);
+					buttonArray[37].setBackground(Color.GREEN);
+					buttonArray[38].setBackground(Color.WHITE);
+					buttonArray[45].setBackground(Color.GREEN);
+					buttonArray[46].setBackground(Color.WHITE);
+					buttonArray[47].setBackground(Color.GREEN);
+				}
+			}
+			if (bigBoardPosition == 5) {
+				if(oWinner==true){
+					buttonArray[30].setBackground(Color.GREEN);
+					buttonArray[31].setBackground(Color.GREEN);
+					buttonArray[32].setBackground(Color.GREEN);
+					buttonArray[39].setBackground(Color.GREEN);
+					buttonArray[40].setBackground(Color.WHITE);
+					buttonArray[41].setBackground(Color.GREEN);
+					buttonArray[48].setBackground(Color.GREEN);
+					buttonArray[49].setBackground(Color.GREEN);
+					buttonArray[50].setBackground(Color.GREEN);
+				}
+				else if(xWinner==true){
+					buttonArray[30].setBackground(Color.GREEN);
+					buttonArray[31].setBackground(Color.WHITE);
+					buttonArray[32].setBackground(Color.GREEN);
+					buttonArray[39].setBackground(Color.WHITE);
+					buttonArray[40].setBackground(Color.GREEN);
+					buttonArray[41].setBackground(Color.WHITE);
+					buttonArray[48].setBackground(Color.GREEN);
+					buttonArray[49].setBackground(Color.WHITE);
+					buttonArray[50].setBackground(Color.GREEN);
+				}
+			}
+			if (bigBoardPosition == 6) {
+				if(oWinner==true){
+					buttonArray[33].setBackground(Color.GREEN);
+					buttonArray[34].setBackground(Color.GREEN);
+					buttonArray[35].setBackground(Color.GREEN);
+					buttonArray[42].setBackground(Color.GREEN);
+					buttonArray[43].setBackground(Color.WHITE);
+					buttonArray[44].setBackground(Color.GREEN);
+					buttonArray[51].setBackground(Color.GREEN);
+					buttonArray[52].setBackground(Color.GREEN);
+					buttonArray[53].setBackground(Color.GREEN);
+				}
+				else if(xWinner==true){
+					buttonArray[33].setBackground(Color.GREEN);
+					buttonArray[34].setBackground(Color.WHITE);
+					buttonArray[35].setBackground(Color.GREEN);
+					buttonArray[42].setBackground(Color.WHITE);
+					buttonArray[43].setBackground(Color.GREEN);
+					buttonArray[44].setBackground(Color.WHITE);
+					buttonArray[51].setBackground(Color.GREEN);
+					buttonArray[52].setBackground(Color.WHITE);
+					buttonArray[53].setBackground(Color.GREEN);
+				}
+			}
+			if (bigBoardPosition == 7) {
+				if(oWinner==true){
+					buttonArray[54].setBackground(Color.GREEN);
+					buttonArray[55].setBackground(Color.GREEN);
+					buttonArray[56].setBackground(Color.GREEN);
+					buttonArray[63].setBackground(Color.GREEN);
+					buttonArray[64].setBackground(Color.WHITE);
+					buttonArray[65].setBackground(Color.GREEN);
+					buttonArray[72].setBackground(Color.GREEN);
+					buttonArray[73].setBackground(Color.GREEN);
+					buttonArray[74].setBackground(Color.GREEN);
+				}
+				else if(xWinner==true){
+					buttonArray[54].setBackground(Color.GREEN);
+					buttonArray[55].setBackground(Color.WHITE);
+					buttonArray[56].setBackground(Color.GREEN);
+					buttonArray[63].setBackground(Color.WHITE);
+					buttonArray[64].setBackground(Color.GREEN);
+					buttonArray[65].setBackground(Color.WHITE);
+					buttonArray[72].setBackground(Color.GREEN);
+					buttonArray[73].setBackground(Color.WHITE);
+					buttonArray[74].setBackground(Color.GREEN);
+				}
+			}
+			if (bigBoardPosition == 8) {
+				if(oWinner==true){
+					buttonArray[57].setBackground(Color.GREEN);
+					buttonArray[58].setBackground(Color.GREEN);
+					buttonArray[59].setBackground(Color.GREEN);
+					buttonArray[66].setBackground(Color.GREEN);
+					buttonArray[67].setBackground(Color.WHITE);
+					buttonArray[68].setBackground(Color.GREEN);
+					buttonArray[75].setBackground(Color.GREEN);
+					buttonArray[76].setBackground(Color.GREEN);
+					buttonArray[77].setBackground(Color.GREEN);
+				}
+				else if(xWinner==true){
+					buttonArray[57].setBackground(Color.GREEN);
+					buttonArray[58].setBackground(Color.WHITE);
+					buttonArray[59].setBackground(Color.GREEN);
+					buttonArray[66].setBackground(Color.WHITE);
+					buttonArray[67].setBackground(Color.GREEN);
+					buttonArray[68].setBackground(Color.WHITE);
+					buttonArray[75].setBackground(Color.GREEN);
+					buttonArray[76].setBackground(Color.WHITE);
+					buttonArray[77].setBackground(Color.GREEN);
+				}
+			}
+			if (bigBoardPosition == 9) {
+				if(oWinner==true){
+					buttonArray[60].setBackground(Color.GREEN);
+					buttonArray[61].setBackground(Color.GREEN);
+					buttonArray[62].setBackground(Color.GREEN);
+					buttonArray[69].setBackground(Color.GREEN);
+					buttonArray[70].setBackground(Color.WHITE);
+					buttonArray[71].setBackground(Color.GREEN);
+					buttonArray[78].setBackground(Color.GREEN);
+					buttonArray[79].setBackground(Color.GREEN);
+					buttonArray[80].setBackground(Color.GREEN);
+				}
+				else if(xWinner==true){
+					buttonArray[60].setBackground(Color.GREEN);
+					buttonArray[61].setBackground(Color.WHITE);
+					buttonArray[62].setBackground(Color.GREEN);
+					buttonArray[69].setBackground(Color.WHITE);
+					buttonArray[70].setBackground(Color.GREEN);
+					buttonArray[71].setBackground(Color.WHITE);
+					buttonArray[78].setBackground(Color.GREEN);
+					buttonArray[79].setBackground(Color.WHITE);
+					buttonArray[80].setBackground(Color.GREEN);
+				}
+			}
+		}
+	}
+
+	public static boolean checkGrandVictory(ArrayList<Integer> whoWon){
+		boolean checkBig = false;
+		if(whoWon.equals(oSpotsBig)){
+			if((oSpotsBig.contains(1) && oSpotsBig.contains(2) && oSpotsBig.contains(3)) || (oSpotsBig.contains(7)
+					&& oSpotsBig.contains(8) && oSpotsBig.contains(9)) || (oSpotsBig.contains(4) && 
+							oSpotsBig.contains(5) && oSpotsBig.contains(6)) || 
+							(oSpotsBig.contains(1) && oSpotsBig.contains(5) && oSpotsBig.contains(9)) ||
+							(oSpotsBig.contains(3)
+									&& oSpotsBig.contains(5) && oSpotsBig.contains(7)) ||
+									(oSpotsBig.contains(2)
+											&& oSpotsBig.contains(5) && oSpotsBig.contains(8)) ||
+											(oSpotsBig.contains(1)
+													&& oSpotsBig.contains(4) && oSpotsBig.contains(7))
+													|| (oSpotsBig.contains(3)
+															&& oSpotsBig.contains(6) && oSpotsBig.contains(9))||oSpotsBig.size()==5 ){
+				checkBig=true;
+			}
+		}
+		else if(whoWon.equals(xSpotsBig)){
+			if((xSpotsBig.contains(1) && xSpotsBig.contains(2) && xSpotsBig.contains(3)) || (xSpotsBig.contains(7)
+					&& xSpotsBig.contains(8) && xSpotsBig.contains(9)) || (xSpotsBig.contains(4) && 
+							xSpotsBig.contains(5) && xSpotsBig.contains(6)) || 
+							(xSpotsBig.contains(1) && xSpotsBig.contains(5) && xSpotsBig.contains(9)) ||
+							(xSpotsBig.contains(3)
+									&& xSpotsBig.contains(5) && xSpotsBig.contains(7)) ||
+									(xSpotsBig.contains(2)
+											&& xSpotsBig.contains(5) && xSpotsBig.contains(8)) ||
+											(xSpotsBig.contains(1)
+													&& xSpotsBig.contains(4) && xSpotsBig.contains(7))
+													|| (xSpotsBig.contains(3)
+															&& xSpotsBig.contains(6) && xSpotsBig.contains(9)) || xSpotsBig.size()==5){
+				checkBig=true;
+			}
+		}
+		grandWinAction(checkBig);
+		return checkBig;
+	}
+
+	public static void tieAction(){
+		JPanel panel = new JPanel();
+		JLabel label0;
+		JButton button;
+		if(oCount>xCount){
+			tieFrame.setVisible(true);
+			tieFrame.setTitle("The tie has been broken!");
+			label0=new JLabel("<html><font size=20><center>O is the <b>grand winner!</b></center></html></font>");
+		}
+		else if(xCount>oCount){
+			tieFrame.setVisible(true);
+			tieFrame.setTitle("The tie has been broken!");
+			label0=new JLabel("<html><font size=20><center>X is the <b>grand winner!</b></center></html></font>");
+		}
+		else{
+			tie=true;
+			tieFrame.setVisible(true);
+			tieFrame.setTitle("The tie has not been broken!");
+			label0=new JLabel("<html><font size=20><center>A winner has not been determined!</b></center></html></font>");
+			button=new JButton("Try Again!");
+			button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent event) {
+					RevertColor();
+					for (int i = 0; i < 81; i++) {
+						buttonArray[i].setText(" ");
+					}
+					// brings back to original big board and clears the locations of
+					// x and o
+					showBoard(board1);
+					showBoard(board2);
+					showBoard(board3);
+					showBoard(board4);
+					showBoard(board5);
+					showBoard(board6);
+					showBoard(board7);
+					showBoard(board8);
+					showBoard(board9);
+					frame.setTitle("Which Board?: " + player1 + " Picks");
+					xSpots.clear();
+					oSpots.clear();
+
+				}
+
+			});
+			panel.add(button);
+		}
+		panel.add(label0);
+		tieFrame.add(panel);
+	}
+
+	public static void grandWinAction(boolean didSomeoneWin){
+		//remember to add buttons
+		if(didSomeoneWin==true){
+			grandFrame.setVisible(true);
+		}
+		JPanel panel = new JPanel();
+		JLabel label0 = new JLabel("<html><font color=red size=22><center>GAME OVER!<br></center></font></html>");
+		JLabel label1 = null;
+		JButton button;
+		if(oCount>xCount){
+			label1= new JLabel("<html><font size=22><center>O is the <b>grand winner!</b></html></font></center>");
+		}
+		if(xCount>oCount){
+			label1= new JLabel("<html><font size=22><center>X is the <b>grand winner!</b></html></font></center>");
+		}
+		if(xCount==oCount){
+			label1  = new JLabel("<html><font size=22><center>It's a tie!<br>Play a final match!</html></font></center>");
+		}
+		if(oCount>xCount || oCount<xCount){
+			button = new JButton("Play Again!");
+			button.addActionListener(new ActionListener() {
+				@SuppressWarnings("unused")
+				public void actionPerformed(ActionEvent e) {
+					for (int i = 0; i < 81; i++) {
+						buttonArray[i].setText(" ");
+					}
+					// brings back to original big board and clears the locations of
+					// x and o
+					RevertColor();
+					showBoard(board1);
+					showBoard(board2);
+					showBoard(board3);
+					showBoard(board4);
+					showBoard(board5);
+					showBoard(board6);
+					showBoard(board7);
+					showBoard(board8);
+					showBoard(board9);
+					frame.setTitle("Which Board?: " + player1 + " Picks");
+					xSpots.clear();
+					oSpots.clear();
+					grandFrame.setVisible(false);
+				}
+
+			});
+		}
+		else{
+			button = new JButton("Final Round!");
+			button.addActionListener(new ActionListener() {
+				@SuppressWarnings("unused")
+				public void actionPerformed(ActionEvent e) {
+					for (int i = 0; i < 81; i++) {
+						buttonArray[i].setText(" ");
+					}
+					// brings back to original big board and clears the locations of
+					// x and o
+					showBoard(board1);
+					showBoard(board2);
+					showBoard(board3);
+					showBoard(board4);
+					showBoard(board5);
+					showBoard(board6);
+					showBoard(board7);
+					showBoard(board8);
+					showBoard(board9);
+					frame.setTitle("Which Board?: " + player1 + " Picks");
+					xSpots.clear();
+					oSpots.clear();
+				}
+			});
+			tie=true;
+		}
+		panel.add(label0);
+		panel.add(label1);
+		panel.add(button);
+		grandFrame.add(panel);
+	}
+	public static void RevertColor(){
+		for(int i=0;i<81;i++){
+			if(i<=2 || (i>=6 && i<=8) || (i>=9 && i<11) || i==11 || i==32 || (i>=64 && i<=65) ||  i==73|| i==74 ||
+					(i>=15 && i<=17) || (i>=18 && i<=20) || 
+					(i>=24 && i<=26) || (i>=30 && i<32) || (i>=39 && i<=41) ||
+					(i>=48 && i<=50) ||(i>=54 && i<=56)|| (i>=63 && i<=65) || (i>=60 && i<=62) || (i>=69 && i<=71) || (i>=78 && i<=80) || i==72 || (i>=69 && i<=71)
+					&& (i>=72 && i<=73)){
+				buttonArray[i].setBackground(Color.GREEN);
+			}
+			else{
+				buttonArray[i].setBackground(Color.WHITE);
+			}
+		}
+	}
+}
+
+
