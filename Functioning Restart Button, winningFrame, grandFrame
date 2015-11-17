@@ -396,8 +396,10 @@ public class Board extends JFrame {
 				showBoard(board8);
 				showBoard(board9);
 				frame.setTitle("Which Board?: " + player1 + " Picks");
-				xSpots.clear();
-				oSpots.clear();
+				xSpots.removeAll(xSpots); //here is where I made changes
+					oSpots.removeAll(oSpots);
+					oSpotsBig.removeAll(oSpotsBig);
+					xSpotsBig.removeAll(xSpotsBig);
 
 
 
@@ -501,8 +503,10 @@ public class Board extends JFrame {
 				showBoard(board8);
 				showBoard(board9);
 				frame.setTitle("Which Board?: " + player1 + " Picks");
-				xSpots.clear();
-				oSpots.clear();
+			xSpots.removeAll(xSpots); //here is where I made changes
+					oSpots.removeAll(oSpots);
+					oSpotsBig.removeAll(oSpotsBig);
+					xSpotsBig.removeAll(xSpotsBig);
 				winningFrame.setVisible(false);
 				tieFrame.setVisible(false);
 				dispose();
@@ -524,8 +528,10 @@ public class Board extends JFrame {
 				showBoard(board8);
 				showBoard(board9);
 				frame.setTitle("Which Board?: " + player1 + " Picks");
-				xSpots.clear();
-				oSpots.clear();
+			xSpots.removeAll(xSpots); //here is where I made changes
+					oSpots.removeAll(oSpots);
+					oSpotsBig.removeAll(oSpotsBig);
+					xSpotsBig.removeAll(xSpotsBig);
 				winningFrame.setVisible(false);
 				tieFrame.setVisible(false);
 				dispose();
@@ -936,8 +942,10 @@ public class Board extends JFrame {
 					showBoard(board8);
 					showBoard(board9);
 					frame.setTitle("Which Board?: " + player1 + " Picks");
-					xSpots.clear();
-					oSpots.clear();
+				xSpots.removeAll(xSpots); //here is where I made changes
+					oSpots.removeAll(oSpots);
+					oSpotsBig.removeAll(oSpotsBig);
+					xSpotsBig.removeAll(xSpotsBig);
 
 				}
 
@@ -987,8 +995,10 @@ public class Board extends JFrame {
 					showBoard(board8);
 					showBoard(board9);
 					frame.setTitle("Which Board?: " + player1 + " Picks");
-					xSpots.clear();
-					oSpots.clear();
+				xSpots.removeAll(xSpots); //here is where I made changes
+					oSpots.removeAll(oSpots);
+					oSpotsBig.removeAll(oSpotsBig);
+					xSpotsBig.removeAll(xSpotsBig);
 					grandFrame.setVisible(false);
 				}
 
@@ -1014,8 +1024,10 @@ public class Board extends JFrame {
 					showBoard(board8);
 					showBoard(board9);
 					frame.setTitle("Which Board?: " + player1 + " Picks");
-					xSpots.clear();
-					oSpots.clear();
+					xSpots.removeAll(xSpots); //here is where I made changes
+					oSpots.removeAll(oSpots);
+					oSpotsBig.removeAll(oSpotsBig);
+					xSpotsBig.removeAll(xSpotsBig);
 				}
 			});
 			tie=true;
