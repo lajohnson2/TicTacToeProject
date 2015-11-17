@@ -1,0 +1,26 @@
+button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent event) {
+					RevertColor();
+					for (int i = 0; i < 81; i++) {
+						buttonArray[i].setText(" ");
+					}
+					// brings back to original big board and clears the locations of
+					// x and o
+					showBoard(board1);
+					showBoard(board2);
+					showBoard(board3);
+					showBoard(board4);
+					showBoard(board5);
+					showBoard(board6);
+					showBoard(board7);
+					showBoard(board8);
+					showBoard(board9);
+					frame.setTitle("Which Board?: " + player1 + " Picks");
+					xSpots.removeAll(xSpots); //here is where I made changes
+					oSpots.removeAll(oSpots);
+					oSpotsBig.removeAll(oSpotsBig);
+					xSpotsBig.removeAll(xSpotsBig);
+
+				}
+
+			});
