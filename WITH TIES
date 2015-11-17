@@ -539,84 +539,24 @@ public class TicTacToeBoard extends JFrame {
 		String Tlabel2 = "The player with the least amount of spots on the board wins!";
 		String Tlabel3 = "";
 		if(tie == true){
-			for (int i = 0; i < 9; i++) {
-				if (bigBoardPosition == 1) {
-						board1.get(i).setBackground(Color.CYAN);
-						board1.get(3).setBackground(Color.WHITE);
-						board1.get(5).setBackground(Color.WHITE);
-						board1.get(6).setBackground(Color.WHITE);
-						board1.get(8).setBackground(Color.WHITE);
-					}
-				if (bigBoardPosition == 2) {
-					board2.get(i).setBackground(Color.CYAN);
-					board2.get(3).setBackground(Color.WHITE);
-					board2.get(5).setBackground(Color.WHITE);
-					board2.get(6).setBackground(Color.WHITE);
-					board2.get(8).setBackground(Color.WHITE);
-				}
-				if (bigBoardPosition == 3) {
-					board3.get(i).setBackground(Color.CYAN);
-					board3.get(3).setBackground(Color.WHITE);
-					board3.get(5).setBackground(Color.WHITE);
-					board3.get(6).setBackground(Color.WHITE);
-					board3.get(8).setBackground(Color.WHITE);
-				}
-				if (bigBoardPosition == 4) {
-					board4.get(i).setBackground(Color.CYAN);
-					board4.get(3).setBackground(Color.WHITE);
-					board4.get(5).setBackground(Color.WHITE);
-					board4.get(6).setBackground(Color.WHITE);
-					board4.get(8).setBackground(Color.WHITE);
-				}
-				if (bigBoardPosition == 5) {
-					board5.get(i).setBackground(Color.CYAN);
-					board5.get(3).setBackground(Color.WHITE);
-					board5.get(5).setBackground(Color.WHITE);
-					board5.get(6).setBackground(Color.WHITE);
-					board5.get(8).setBackground(Color.WHITE);
-				}
-				if (bigBoardPosition == 6) {
-					board6.get(i).setBackground(Color.CYAN);
-					board6.get(3).setBackground(Color.WHITE);
-					board6.get(5).setBackground(Color.WHITE);
-					board6.get(6).setBackground(Color.WHITE);
-					board6.get(8).setBackground(Color.WHITE);
-				}
-				if (bigBoardPosition == 7) {
-					board7.get(i).setBackground(Color.CYAN);
-					board7.get(3).setBackground(Color.WHITE);
-					board7.get(5).setBackground(Color.WHITE);
-					board7.get(6).setBackground(Color.WHITE);
-					board7.get(8).setBackground(Color.WHITE);
-				}
-				if (bigBoardPosition == 8) {
-					board8.get(i).setBackground(Color.CYAN);
-					board8.get(3).setBackground(Color.WHITE);
-					board8.get(5).setBackground(Color.WHITE);
-					board8.get(6).setBackground(Color.WHITE);
-					board8.get(8).setBackground(Color.WHITE);
-				}
-				if (bigBoardPosition == 9) {
-					board9.get(i).setBackground(Color.CYAN);
-					board9.get(3).setBackground(Color.WHITE);
-					board9.get(5).setBackground(Color.WHITE);
-					board9.get(6).setBackground(Color.WHITE);
-					board9.get(8).setBackground(Color.WHITE);
-				}
-				
-				
 				if(oSpots.size() ==4){
 					Tlabel3 = "Congratulations O!";
 					oSpotsBig.add(bigBoardPosition);
+					oWinner = true;
+					xWinner = false;
+					turnGray(bigBoardPosition);
 				}
 				if(xSpots.size() ==4){
 					Tlabel3 = "Congratulations X!";
 					xSpotsBig.add(bigBoardPosition);
+					oWinner = false;
+					xWinner = true;
+					turnGray(bigBoardPosition);
 				}
 				
 				tieFrame.setTitle("There was a Tie!");
 				tieFrame.setVisible(true);
-		}}
+		}
 		JLabel tieLabel1 = new JLabel(Tlabel1);
 		JLabel tieLabel2 = new JLabel(Tlabel2);
 		JLabel tieLabel3 = new JLabel(Tlabel3);
