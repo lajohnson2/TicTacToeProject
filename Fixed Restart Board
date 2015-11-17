@@ -109,7 +109,6 @@ public class TicTacToeBoard extends JFrame {
 						UIManager.put("Button.font",
 								new javax.swing.plaf.FontUIResource("Century Gothic", Font.BOLD, 35));
 								xSpots.add(Integer.parseInt(button.getName()));
-								winOrLose(xSpots);
 								if(winOrLose(xSpots)){
 									count = 0;
 								}
@@ -129,7 +128,6 @@ public class TicTacToeBoard extends JFrame {
 						UIManager.put("Button.font",
 								new javax.swing.plaf.FontUIResource("Century Gothic", Font.BOLD, 35));
 								oSpots.add(Integer.parseInt(button.getName()));
-								winOrLose(oSpots);
 								if(winOrLose(oSpots)){
 									count = 1;
 								}
@@ -421,34 +419,34 @@ public class TicTacToeBoard extends JFrame {
 	public boolean winOrLose(ArrayList<Integer> locations) {
 		boolean result = false;
 		if (locations.contains(0) && locations.contains(1) && locations.contains(2)) {
-			
+			result = true;
 			winAction(locations,false);
 		} else if (locations.contains(3) && locations.contains(4) && locations.contains(5)) {
-			
+			result = true;
 			winAction(locations,false);
 		} else if (locations.contains(6) && locations.contains(7) && locations.contains(8)) {
-			
+			result = true;
 			winAction(locations,false);
 		} else if (locations.contains(0) && locations.contains(3) && locations.contains(6)) {
-			
+			result = true;
 			winAction(locations,false);
 		} else if (locations.contains(1) && locations.contains(4) && locations.contains(7)) {
-			
+			result = true;
 			winAction(locations,false);
 		} else if (locations.contains(2) && locations.contains(5) && locations.contains(8)) {
-			
+			result = true;
 			winAction(locations,false);
 		} else if (locations.contains(0) && locations.contains(4) && locations.contains(8)) {
-			
+			result = true;
 			winAction(locations,false);
 		} else if (locations.contains(6) && locations.contains(4) && locations.contains(2)) {
-			
+			result = true;
 			winAction(locations,false);
 		} else  if(locations.contains(0) && locations.contains(4) &&locations.contains(8)){
-			
+			result = true;
 			winAction(locations,false);
 		} else if(locations.size() == 5) {
-			
+
 			winAction(locations,true);
 		}
 		return result;
